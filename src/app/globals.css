@@ -3,24 +3,27 @@
 
 /* ------------------------------------------------------------------
    Tokens · Municipalidad Provincial de Puno — GGIRS
-   Identidad del portal oficial munipuno.gob.pe: azul #0088CC, azul
-   marino #004173, fondo blanco y gris azulado, tipografía Kumbh Sans.
+   Paleta "totora y lago": verdes de la totora y los bosques de la
+   ribera para la marca, y celestes del Titicaca que se aclaran hacia
+   el blanco para los fondos. Tipografía Kumbh Sans del portal.
+   Los nombres puno-* se mantienen: son el color de marca, no un tono.
    El amarillo del escudo (#FFD900) se reserva para el foco del teclado.
    ------------------------------------------------------------------ */
 @theme {
   --color-blanco: #ffffff;
-  --color-cielo: #edf4fa;
-  --color-bruma: #d8e5f0;
-  --color-niebla: #c3d2df;
-  --color-tinta: #172434;
-  --color-pizarra: #52637a;
-  --color-noche: #002a4d;
-  --color-puno-800: #004173;
-  --color-puno: #0072ad;
-  --color-puno-500: #0088cc;
-  --color-celeste: #01a0e2;
-  --color-celeste-200: #b9e3f6;
-  --color-celeste-50: #e9f5fc;
+  --color-cielo: #eef8fa;
+  --color-bruma: #d5ebef;
+  --color-niebla: #b9d5da;
+  --color-tinta: #13261f;
+  --color-pizarra: #4b5f58;
+  --color-noche: #08301f;
+  --color-puno-800: #0d4a33;
+  --color-puno: #16704a;
+  --color-puno-500: #26935f;
+  --color-brote: #9fd356;
+  --color-celeste: #1aa7d8;
+  --color-celeste-200: #bfe9f5;
+  --color-celeste-50: #ebf8fc;
   --color-inti: #ffd900;
   --color-exito: #1f7a3a;
 
@@ -32,8 +35,8 @@
 
   --font-sans: var(--font-kumbh), ui-sans-serif, system-ui, sans-serif;
 
-  --shadow-panel: 0 1px 2px rgb(0 42 77 / 0.06), 0 12px 32px -12px rgb(0 42 77 / 0.18);
-  --shadow-float: 0 24px 60px -20px rgb(0 42 77 / 0.35);
+  --shadow-panel: 0 1px 2px rgb(8 48 31 / 0.06), 0 12px 32px -12px rgb(8 48 31 / 0.18);
+  --shadow-float: 0 24px 60px -20px rgb(8 48 31 / 0.35);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -73,8 +76,8 @@
 }
 
 :root {
-  --sector-1: #004173;
-  --sector-2: #0088cc;
+  --sector-1: #0d4a33;
+  --sector-2: #0a7fbf;
   --sector-3: #0f7f86;
   --sector-4: #6d4aa8;
   --header-h: 4.75rem;
@@ -122,7 +125,7 @@
     color: var(--color-noche);
   }
 
-  /* Anillo de foco con el amarillo del escudo y halo marino: visible sobre fotos, blanco y azul */
+  /* Anillo de foco con el amarillo del escudo y halo verde oscuro: visible sobre fotos, blanco y azul */
   :focus-visible {
     outline: 3px solid var(--color-inti);
     outline-offset: 2px;
@@ -166,7 +169,7 @@
     background: currentColor;
   }
 
-  /* Ondas escalonadas del escudo de Puno (el lago), usadas como textura en bandas azules */
+  /* Ondas escalonadas del escudo de Puno (el lago), usadas como textura en bandas de color */
   .lake-waves {
     background-image:
       repeating-linear-gradient(90deg, currentColor 0 22px, transparent 22px 30px),
@@ -211,7 +214,7 @@
   .field:focus-visible {
     outline: none;
     border-color: var(--color-puno);
-    box-shadow: 0 0 0 3px rgb(0 136 204 / 0.25);
+    box-shadow: 0 0 0 3px rgb(22 112 74 / 0.25);
   }
   .field[aria-invalid="true"] {
     border-color: var(--color-peligroso);
@@ -293,7 +296,7 @@
   background: var(--color-puno-800);
   color: #fff;
   border: 3px solid #fff;
-  box-shadow: 0 6px 16px rgb(0 42 77 / 0.35);
+  box-shadow: 0 6px 16px rgb(8 48 31 / 0.35);
 }
 .truck-marker::after {
   content: "";
@@ -331,7 +334,7 @@
   background: #fff;
   font: 700 11px/1 var(--font-sans);
   color: var(--color-tinta);
-  box-shadow: 0 4px 14px rgb(0 42 77 / 0.25);
+  box-shadow: 0 4px 14px rgb(8 48 31 / 0.25);
 }
 .endpoint-marker i {
   width: 16px;

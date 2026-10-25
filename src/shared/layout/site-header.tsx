@@ -43,7 +43,7 @@ export function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 bg-white transition-[transform,box-shadow] duration-500 ease-out-expo",
         hidden && "-translate-y-full",
-        raised ? "shadow-[0_8px_30px_-12px_rgb(0_42_77/0.25)]" : "shadow-[0_1px_0_var(--color-bruma)]",
+        raised ? "shadow-[0_8px_30px_-12px_rgb(8_48_31/0.25)]" : "shadow-[0_1px_0_var(--color-bruma)]",
       )}
     >
       <div className="shell flex h-(--header-h) items-center justify-between gap-6">

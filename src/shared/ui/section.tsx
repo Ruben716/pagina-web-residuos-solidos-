@@ -7,8 +7,8 @@ type Tone = "white" | "soft" | "tint" | "brand";
 const TONES: Record<Tone, string> = {
   white: "bg-white text-tinta",
   soft: "bg-cielo text-tinta",
-  /** celeste con degradado: separa bloques sin llegar al azul de marca */
-  tint: "bg-[linear-gradient(180deg,#dcebf8_0%,#edf4fa_55%,#f6f9fc_100%)] text-tinta",
+  /** celeste con degradado hacia el blanco: separa bloques sin llegar al verde de marca */
+  tint: "bg-[linear-gradient(180deg,#d9f0f5_0%,#eef8fa_55%,#f8fcfc_100%)] text-tinta",
   brand: "bg-puno-800 text-white",
 };
 
@@ -36,7 +36,7 @@ interface HeadingProps {
   className?: string;
 }
 
-/** Titular de sección del portal: rótulo en mayúsculas, título en azul marino y bajada breve. */
+/** Titular de sección del portal: rótulo en mayúsculas, título en verde de marca y bajada breve. */
 export function SectionHeading({ eyebrow, title, lede, id, align = "left", action, tone = "dark", className }: HeadingProps) {
   const light = tone === "light";
   return (

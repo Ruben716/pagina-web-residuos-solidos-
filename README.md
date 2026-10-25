@@ -54,7 +54,8 @@ src/
     news/              noticias y lista editorial
     reports/           asistente de reporte, tickets MPP-AAMM-XXXX y seguimiento
     faq/               preguntas frecuentes
-    home/              portada en carrusel y accesos rápidos
+    office/            la gerencia: líneas de trabajo, organigrama, cifras e índice de servicios
+    home/              carrusel de portada
   shared/
     config/            datos institucionales, navegación y mapa base
     content/           registro de imágenes con créditos y cifras con fuente
@@ -80,24 +81,24 @@ Reglas de dependencia:
 Sigue la identidad del portal oficial [portal.munipuno.gob.pe](https://portal.munipuno.gob.pe): es un sitio del Estado y debe reconocerse como tal a primera vista.
 
 - **Estructura institucional:**
-  - barra superior azul marino con Transparencia, la central, Serenazgo y las redes;
+  - barra superior verde con Transparencia, la central, Serenazgo y las redes;
   - cabecera blanca con el escudo oficial 2025, el nombre de la Municipalidad y el de la gerencia;
-  - pie de página azul con los datos de contacto y los enlaces del Estado.
-- **Color:**
-  - azul `#0088CC` y azul marino `#004173` del portal;
-  - `#0072AD` para textos y botones, porque cumple el contraste AA;
-  - fondo blanco y gris azulado `#F3F7FB`;
+  - pie de página verde con los datos de contacto y los enlaces del Estado.
+- **Color (paleta "totora y lago"):** la gerencia es del área ambiental, así que la marca toma los verdes de la totora y los bosques de la ribera, y los fondos los celestes del Titicaca que se aclaran hacia el blanco.
+  - verde bosque `#0D4A33` para bandas, titulares y pie; `#16704A` para textos y botones, porque cumple el contraste AA;
+  - verde brote `#9FD356` sólo como acento sobre fondos oscuros;
+  - celeste claro `#EEF8FA` y `#EBF8FC` para los fondos;
+  - los nombres de token `puno-*` se mantienen: son "el color de marca", sea cual sea;
   - el amarillo del escudo (`#FFD900`) sólo marca el foco del teclado;
   - los cuatro colores de la NTP 900.058:2019 para la segregación.
 - **Tipografía:** Kumbh Sans, la misma del portal municipal.
 - **Fotografías reales:** las del sitio de referencia y las notas de prensa de la Municipalidad, más algunas fotos libres de Puno (con sus créditos en `/creditos`).
-- **Inicio corto:**
-  - carrusel de portada con las cinco líneas de servicio;
-  - accesos rápidos;
-  - el mapa de rutas, que es el protagonista;
-  - una banda para reportar.
+- **Inicio = presentación de la gerencia:**
+  - carrusel con paisajes del Titicaca y el trabajo de campo;
+  - quiénes somos, las cinco líneas de trabajo (pestañas con foto), un índice de servicios, cifras sobre el amanecer en los totorales, el organigrama con correos y la atención al vecino;
+  - noticias y una banda para reportar.
 
-  Cada servicio tiene su página propia.
+  Cada servicio, incluido el mapa de rutas, tiene su página propia.
 
 - **Movimiento:**
   - entradas suaves al hacer scroll;
@@ -115,6 +116,8 @@ Sigue la identidad del portal oficial [portal.munipuno.gob.pe](https://portal.mu
 - La planta municipal de compostaje: más de 1 t diaria de orgánicos de mercados y el método Takakura. Viene de la nota de prensa de la Municipalidad sobre el mercado Unión y Dignidad, de 2025.
 - Las notas sobre Cancharani (2024) e Itapalluni (2019).
 - La dirección, la central telefónica y Serenazgo de la municipalidad.
+- El organigrama de la GGIRS (gerente, subgerencias, correos y anexo 1060), del Directorio Municipal 2026.
+- Las cifras de la portada: 100–110 t diarias y 60 % aprovechable (Subgerencia de Limpieza Pública, 2026), más de 2 t diarias de orgánicos de mercados y tres jornadas diarias de limpieza en el centro (notas de prensa de la Municipalidad).
 
 **Heredado del sitio anterior, por confirmar con la GGIRS:**
 
@@ -126,7 +129,7 @@ Sigue la identidad del portal oficial [portal.munipuno.gob.pe](https://portal.mu
   - **Para completar:** cargar el GPS o el trazado de cada unidad en `src/modules/routes/data/routes.ts`.
 - Las cifras de resultados de Sumaq Ayni: 15 t, 8 puntos críticos, 1 200 voluntarios y 3 campañas.
 - Las fotos de inicio y fin de la ruta 01.
-- El correo `residuossolidos@munipuno.gob.pe` y el horario de atención.
+- El horario de atención.
 
 **De ejemplo, a reemplazar:**
 

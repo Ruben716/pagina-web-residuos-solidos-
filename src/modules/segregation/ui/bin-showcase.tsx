@@ -57,7 +57,7 @@ export function BinShowcase({ bins }: { bins: readonly Bin[] }) {
       <div className="relative">
         <div
           aria-hidden
-          className="absolute inset-x-[8%] bottom-10 h-10 rounded-[50%] bg-[radial-gradient(closest-side,rgb(0_42_77/0.18),transparent)]"
+          className="absolute inset-x-[8%] bottom-10 h-10 rounded-[50%] bg-[radial-gradient(closest-side,rgb(8_48_31/0.18),transparent)]"
         />
         <div
           role="tablist"
@@ -216,7 +216,7 @@ export function BinShowcase({ bins }: { bins: readonly Bin[] }) {
 function BinArt({ bin, open }: { bin: Bin; open: boolean }) {
   const dark = `color-mix(in srgb, ${bin.swatch} 72%, black)`;
   return (
-    <svg viewBox="0 0 120 176" className="h-auto w-full drop-shadow-[0_14px_18px_rgb(0_42_77/0.22)]" aria-hidden>
+    <svg viewBox="0 0 120 176" className="h-auto w-full drop-shadow-[0_14px_18px_rgb(8_48_31/0.22)]" aria-hidden>
       {/* tapa con bisagra a la izquierda */}
       <motion.g
         initial={false}

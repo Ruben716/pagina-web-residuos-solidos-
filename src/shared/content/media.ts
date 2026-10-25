@@ -124,6 +124,67 @@ export const MEDIA = {
     width: 1800,
     height: 763,
   },
+  // Notas de prensa de gob.pe/munipuno (2024–2025)
+  limpiezaBarrio: {
+    src: "/images/mpp/limpieza-barrio-manto.webp",
+    alt: "Cuadrilla de limpieza pública retirando maleza y tierra de una vereda del barrio Manto",
+    width: 897,
+    height: 562,
+  },
+  acopioColegio: {
+    src: "/images/mpp/acopio-organicos-colegio.webp",
+    alt: "Estudiantes y personal municipal junto a los sacos de residuos orgánicos acopiados en el colegio El Buen Pastor",
+    width: 880,
+    height: 577,
+  },
+  fiscalizacion: {
+    src: "/images/mpp/fiscalizacion-ambiental.webp",
+    alt: "Fiscalizador ambiental de la Municipalidad orientando a una comerciante sobre el manejo de sus residuos",
+    width: 656,
+    height: 395,
+  },
+  // Paisajes del Titicaca
+  titicacaBosque: {
+    src: "/images/naturaleza/titicaca-bosque.webp",
+    alt: "Arbustos y árboles verdes sobre la orilla del lago Titicaca, con totorales y cerros al fondo",
+    width: 2400,
+    height: 1603,
+    credit: {
+      author: "Ministerio de la Producción",
+      source: "Wikimedia Commons",
+      url: "https://commons.wikimedia.org/wiki/File:Lago_Titicaca_en_la_region_Puno.jpg",
+      license: "Dominio público",
+    },
+  },
+  amanecerTotorales: {
+    src: "/images/naturaleza/amanecer-totorales.webp",
+    alt: "Amanecer naranja sobre los totorales del lago Titicaca cerca de Puno",
+    width: 2400,
+    height: 1162,
+    credit: commons(
+      "Diego Delso",
+      "https://commons.wikimedia.org/wiki/File:Amanecer_en_el_lago_Titicaca,_Puno,_Per%C3%BA,_2015-08-01,_DD_01.JPG",
+    ),
+  },
+  punoCiudadLago: {
+    src: "/images/naturaleza/puno-ciudad-lago.webp",
+    alt: "La ciudad de Puno con su bosque de eucaliptos y la bahía del Titicaca",
+    width: 2400,
+    height: 1207,
+    credit: commons("Diego Delso", "https://commons.wikimedia.org/wiki/File:Vista_de_Puno_y_el_Titicaca,_Per%C3%BA,_2015-08-01,_DD_63.JPG"),
+  },
+  taquile: {
+    src: "/images/naturaleza/taquile-lago.webp",
+    alt: "Árboles sobre la ladera de la isla Taquile frente al azul del lago Titicaca",
+    width: 2400,
+    height: 1600,
+    credit: {
+      author: "Olivier Issaly",
+      source: "Wikimedia Commons",
+      url: "https://commons.wikimedia.org/wiki/File:Isla_Taquile_Lago_Titicaca_(4462855661).jpg",
+      license: "CC BY-SA 2.0",
+    },
+  },
 } satisfies Record<string, Media>;
 
 export type MediaKey = keyof typeof MEDIA;

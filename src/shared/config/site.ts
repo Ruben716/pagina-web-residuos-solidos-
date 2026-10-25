@@ -5,15 +5,16 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   description:
     "Rutas y horarios de recolección, guía de segregación, compostaje municipal, campañas Sumaq Ayni y reportes vecinales de la Gerencia de Gestión Integral de Residuos Sólidos de la Municipalidad Provincial de Puno.",
-  // Dirección, central y serenazgo verificados en portal.munipuno.gob.pe (2026).
-  // Correo y horario de la GGIRS heredados del sitio anterior: confirmar con la gerencia.
+  // Dirección, central, serenazgo, correo y anexo de la GGIRS: Directorio Municipal 2026 de portal.munipuno.gob.pe.
+  // El horario de atención viene del sitio anterior: confirmar con la gerencia.
   contact: {
     address: "Jr. Deustua N.° 458, Plaza de Armas, Puno",
     phone: "(051) 601000",
     phoneHref: "tel:+5151601000",
     serenazgo: "(051) 601010",
     serenazgoHref: "tel:+5151601010",
-    email: "residuossolidos@munipuno.gob.pe",
+    email: "ggiresiduossolidos@munipuno.gob.pe",
+    extension: "1060",
     hours: "Lunes a viernes, de 8:00 a. m. a 4:30 p. m.",
   },
   social: [

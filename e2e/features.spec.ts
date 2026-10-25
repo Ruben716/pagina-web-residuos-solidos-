@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Rutas", () => {
-  test("el buscador del inicio encuentra la ruta de una calle y abre su ficha", async ({ page }) => {
-    await page.goto("/");
+  test("el buscador de rutas encuentra la ruta de una calle y abre su ficha", async ({ page }) => {
+    await page.goto("/rutas");
     const search = page.getByRole("searchbox", { name: /Busca tu calle/ });
     const routes = page.getByRole("list", { name: "Rutas de recolección" });
     await expect(async () => {

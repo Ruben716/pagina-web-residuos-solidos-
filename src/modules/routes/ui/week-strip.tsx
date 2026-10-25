@@ -11,7 +11,7 @@ interface Props {
   className?: string;
 }
 
-/** Semana como tira de siete días: los días de servicio van en azul y hoy lleva un anillo. */
+/** Semana como tira de siete días: los días de servicio van en el color de marca y hoy lleva un anillo. */
 export function WeekStrip({ days, today, tone = "light", className }: Props) {
   const dark = tone === "dark";
   return (

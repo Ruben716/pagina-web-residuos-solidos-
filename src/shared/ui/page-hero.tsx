@@ -24,7 +24,7 @@ interface Props {
   className?: string;
 }
 
-/** Cabecera de páginas internas: foto institucional con velo azul, migas de pan y titular. */
+/** Cabecera de páginas internas: foto institucional con velo verde, migas de pan y titular. */
 export function PageHero({ title, eyebrow, lede, crumbs = [], image, focus = "center", children, className }: Props) {
   return (
     <section className={cn("relative isolate overflow-hidden bg-puno-800 text-white", className)}>
@@ -44,7 +44,7 @@ export function PageHero({ title, eyebrow, lede, crumbs = [], image, focus = "ce
       )}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(0_42_77/0.94)_0%,rgb(0_65_115/0.82)_45%,rgb(0_65_115/0.35)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(8_48_31/0.92)_0%,rgb(13_74_51/0.78)_45%,rgb(13_74_51/0.3)_100%)]"
       />
       <div className="shell py-12 md:py-20">
         <nav aria-label="Ruta de navegación" className="text-sm text-white/80">

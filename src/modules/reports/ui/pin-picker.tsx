@@ -8,7 +8,7 @@ export type LatLngTuple = [number, number];
 
 const pinIcon = L.divIcon({
   className: "",
-  html: `<span style="display:block;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#0072ad;border:3px solid #fff;box-shadow:0 6px 18px rgba(6,30,51,.35)"></span>`,
+  html: `<span style="display:block;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#16704a;border:3px solid #fff;box-shadow:0 6px 18px rgba(6,30,51,.35)"></span>`,
   iconSize: [28, 28],
   iconAnchor: [14, 28],
 });
