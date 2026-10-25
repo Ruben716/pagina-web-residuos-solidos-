@@ -2,7 +2,7 @@ import { HeroCarousel } from "@/modules/home/hero-carousel";
 import { SLIDES } from "@/modules/home/slides";
 import { ArticleList, FeaturedArticle, getArticles } from "@/modules/news";
 import { getSectors, plannerView, RoutePlanner } from "@/modules/routes";
-import { BINS, BinSummary } from "@/modules/segregation";
+import { BINS, BinShowcase } from "@/modules/segregation";
 import { SITE } from "@/shared/config/site";
 import { Reveal } from "@/shared/motion/reveal";
 import { ButtonLink } from "@/shared/ui/button";
@@ -50,7 +50,7 @@ export default function Home() {
               </ButtonLink>
             }
           />
-          <BinSummary bins={BINS} />
+          <BinShowcase bins={BINS} />
         </div>
       </Section>
 

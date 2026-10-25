@@ -11,6 +11,10 @@ export interface Bin {
   days: string;
   /** recipiente */
   container: string;
+  /** días de recojo (ISO: 1 = lunes … 7 = domingo); vacío si se entrega en puntos de acopio */
+  weekdays: readonly number[];
+  /** íconos de ejemplo para la animación del tacho (decorativos) */
+  emoji: readonly string[];
   summary: string;
   examples: readonly string[];
   tip: string;
@@ -24,6 +28,8 @@ export interface Bin {
 export const BINS: readonly Bin[] = [
   {
     id: "aprovechable",
+    weekdays: [2, 4, 6],
+    emoji: ["🧴", "📦", "🥫", "🍾", "📰"],
     days: "MAR · JUE · SÁB",
     container: "Tacho o bolsa verde",
     color: "Verde",
@@ -45,6 +51,8 @@ export const BINS: readonly Bin[] = [
   },
   {
     id: "organico",
+    weekdays: [1, 3, 5],
+    emoji: ["🍌", "🥚", "🍂", "🥕", "☕"],
     days: "LUN · MIÉ · VIE",
     container: "Tacho o bolsa marrón",
     color: "Marrón",
@@ -67,6 +75,8 @@ export const BINS: readonly Bin[] = [
   },
   {
     id: "no-aprovechable",
+    weekdays: [1, 2, 3, 4, 5, 6, 7],
+    emoji: ["🧻", "😷", "🍬", "🪥"],
     days: "Diario · turno noche",
     container: "Tacho o bolsa negra",
     color: "Negro",
@@ -89,6 +99,8 @@ export const BINS: readonly Bin[] = [
   },
   {
     id: "peligroso",
+    weekdays: [],
+    emoji: ["🔋", "💡", "💊", "📱"],
     days: "Puntos de acopio",
     container: "Tacho o bolsa roja",
     color: "Rojo",
