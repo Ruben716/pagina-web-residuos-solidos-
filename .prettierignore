@@ -1,0 +1,7 @@
+.next
+node_modules
+public
+.data
+src/modules/routes/data/routes.ts
+playwright-report
+test-results

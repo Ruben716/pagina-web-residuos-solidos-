@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# datos locales de formularios
+/.data
+/test-results
+/playwright-report
+/playwright/.cache

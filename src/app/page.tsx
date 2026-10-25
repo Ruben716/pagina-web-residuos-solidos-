@@ -1,69 +1,123 @@
-import Image from "next/image";
+import { HeroCarousel } from "@/modules/home/hero-carousel";
+import { SLIDES } from "@/modules/home/slides";
+import { ArticleList, FeaturedArticle, getArticles } from "@/modules/news";
+import { getSectors, plannerView, RoutePlanner } from "@/modules/routes";
+import { BINS, BinSummary } from "@/modules/segregation";
+import { SITE } from "@/shared/config/site";
+import { Reveal } from "@/shared/motion/reveal";
+import { ButtonLink } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { Section, SectionHeading } from "@/shared/ui/section";
 
 export default function Home() {
+  const [featured, ...more] = getArticles();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <HeroCarousel slides={SLIDES} title={`${SITE.office} de la ${SITE.institution}`} />
+
+      {/* Rutas: la sección principal */}
+      <Section tone="tint" id="rutas" aria-labelledby="rutas-titulo" className="scroll-mt-4 overflow-hidden">
+        <div aria-hidden className="lake-waves absolute inset-x-0 top-10 text-puno-500/15" />
+        <div className="shell relative">
+          <SectionHeading
+            id="rutas-titulo"
+            eyebrow="Sistema integral de limpieza pública"
+            title="Rutas de recolección en Puno"
+            lede="Elige tu ruta o busca tu calle: verás en el mapa por dónde pasa el camión, qué días y a qué hora. El estado se calcula con la hora de Puno."
+            action={
+              <ButtonLink href="/rutas" variant="outline" icon="arrow">
+                Horarios por sector
+              </ButtonLink>
+            }
+          />
+          <Reveal>
+            <RoutePlanner routes={plannerView()} sectors={getSectors()} />
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* Segregación */}
+      <Section tone="soft" aria-labelledby="colores">
+        <div className="shell">
+          <SectionHeading
+            id="colores"
+            eyebrow="Segregación en la fuente"
+            title="Separa tus residuos en cuatro colores"
+            lede="Es el código de la NTP 900.058:2019. No necesitas tachos nuevos: bastan bolsas o cajas marcadas, y cada color tiene sus días de recojo."
+            action={
+              <ButtonLink href="/segregacion#buscador" variant="outline" icon="search">
+                ¿Dónde va esto?
+              </ButtonLink>
+            }
+          />
+          <BinSummary bins={BINS} />
+        </div>
+      </Section>
+
+      {/* Actualidad */}
+      <Section tone="brand" aria-labelledby="noticias" className="overflow-hidden">
+        <div aria-hidden className="lake-waves absolute inset-x-0 bottom-10 text-white/10" />
+        <div
+          aria-hidden
+          className="absolute -top-40 -right-32 size-[34rem] rounded-full bg-[radial-gradient(circle,rgb(0_136_204/0.45),transparent_70%)]"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className="shell relative">
+          <SectionHeading
+            id="noticias"
+            tone="light"
+            eyebrow="Actualidad y transparencia ambiental"
+            title="Notas de prensa"
+            action={
+              <ButtonLink href="/noticias" variant="white" icon="arrow">
+                Todas las noticias
+              </ButtonLink>
+            }
+          />
+          <FeaturedArticle article={featured} />
+          <div className="mt-6">
+            <ArticleList articles={more.slice(0, 3)} />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+      </Section>
+
+      {/* Reporta */}
+      <section aria-labelledby="reporta-titulo" className="bg-cielo py-16 md:py-20">
+        <div className="shell">
+          <Reveal className="relative isolate overflow-hidden rounded-3xl bg-puno px-6 py-10 text-white md:px-12 md:py-12">
+            <div aria-hidden className="lake-waves absolute inset-x-0 bottom-6 -z-10 text-white/15" />
+            <div
+              aria-hidden
+              className="absolute -top-24 -right-16 -z-10 size-72 rounded-full bg-[radial-gradient(circle,rgb(1_160_226/0.55),transparent_70%)]"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-start gap-5">
+                <span className="hidden size-14 shrink-0 place-items-center rounded-2xl bg-white/15 sm:grid">
+                  <Icon name="camera" size={28} />
+                </span>
+                <div>
+                  <p className="text-sm font-bold tracking-[0.12em] text-celeste-200 uppercase">Fiscalización ciudadana</p>
+                  <h2 id="reporta-titulo" className="mt-2 text-2xl font-extrabold md:text-3xl">
+                    ¿Una esquina se volvió basural? Repórtala
+                  </h2>
+                  <p className="mt-2 max-w-[60ch] text-white/85">
+                    Envía una foto y la ubicación. El reporte llega a fiscalización y recibes un código para seguir cada etapa, también si
+                    lo envías de forma anónima.
+                  </p>
+                </div>
+              </div>
+              <div className="flex shrink-0 flex-wrap gap-3">
+                <ButtonLink href="/reporta" variant="white" icon="arrow">
+                  Reportar ahora
+                </ButtonLink>
+                <ButtonLink href="/reporta/seguimiento" variant="ghost">
+                  Seguir mi reporte
+                </ButtonLink>
+              </div>
+            </div>
+          </Reveal>
         </div>
-      </main>
-    </div>
+      </section>
+    </>
   );
 }

@@ -1,0 +1,166 @@
+export type BinId = "aprovechable" | "organico" | "no-aprovechable" | "peligroso";
+
+export interface Bin {
+  id: BinId;
+  color: string;
+  colorName: string;
+  name: string;
+  /** cuándo se entrega */
+  schedule: string;
+  /** rótulo corto de días de recojo (sitio de referencia) */
+  days: string;
+  /** recipiente */
+  container: string;
+  summary: string;
+  examples: readonly string[];
+  tip: string;
+  /** valor CSS del color de la categoría */
+  swatch: string;
+  /** texto legible sobre el swatch */
+  ink: string;
+}
+
+// NTP 900.058:2019 (R.D. N.° 003-2019-INACAL/DN), ámbito municipal: cuatro colores.
+export const BINS: readonly Bin[] = [
+  {
+    id: "aprovechable",
+    days: "MAR · JUE · SÁB",
+    container: "Tacho o bolsa verde",
+    color: "Verde",
+    colorName: "verde",
+    name: "Aprovechables",
+    schedule: "Martes, jueves y sábado, en el camión de recolección selectiva",
+    summary: "Todo lo que puede volver a ser materia prima. Limpio, seco y aplastado ocupa la mitad y vale el doble para los recicladores.",
+    examples: [
+      "Botellas PET aplastadas",
+      "Papel y cartón secos",
+      "Latas y metales",
+      "Envases de vidrio",
+      "Tetrapak enjuagado",
+      "Plásticos rígidos",
+    ],
+    tip: "Enjuaga los envases y aplástalos. Un envase con restos de comida contamina toda la bolsa.",
+    swatch: "var(--color-aprovechable)",
+    ink: "#ffffff",
+  },
+  {
+    id: "organico",
+    days: "LUN · MIÉ · VIE",
+    container: "Tacho o bolsa marrón",
+    color: "Marrón",
+    colorName: "marrón",
+    name: "Orgánicos",
+    schedule: "Lunes, miércoles y viernes; o en tu compostera",
+    summary:
+      "Dos de cada tres kilos de basura de un hogar puneño son restos orgánicos. Bien separados se convierten en abono para los parques de la ciudad.",
+    examples: [
+      "Cáscaras de frutas y verduras",
+      "Restos de comida",
+      "Borra de café e infusiones",
+      "Cáscaras de huevo",
+      "Hojas secas y poda",
+      "Aserrín sin tratar",
+    ],
+    tip: "Escurre los restos antes de embolsarlos: menos líquido, menos olor y un compost de mejor calidad.",
+    swatch: "var(--color-organico)",
+    ink: "#ffffff",
+  },
+  {
+    id: "no-aprovechable",
+    days: "Diario · turno noche",
+    container: "Tacho o bolsa negra",
+    color: "Negro",
+    colorName: "negro",
+    name: "No aprovechables",
+    schedule: "Todos los días, en el turno de tu ruta",
+    summary:
+      "Lo que no se puede recuperar y va al relleno sanitario de Itapalluni. Mientras menos llenes esta bolsa, mejor va la segregación de tu casa.",
+    examples: [
+      "Papel higiénico y pañales",
+      "Colillas de cigarro",
+      "Tecnopor sucio",
+      "Envolturas metalizadas",
+      "Mascarillas y guantes",
+      "Cerámica rota (envuelta)",
+    ],
+    tip: "Envuelve vidrios o cerámicas rotas en papel periódico y márcalas: protegen a quien recoge tu bolsa.",
+    swatch: "var(--color-no-aprovechable)",
+    ink: "#ffffff",
+  },
+  {
+    id: "peligroso",
+    days: "Puntos de acopio",
+    container: "Tacho o bolsa roja",
+    color: "Rojo",
+    colorName: "rojo",
+    name: "Peligrosos",
+    schedule: "Puntos de acopio municipales y campañas Sumaq Ayni",
+    summary:
+      "Pequeños pero tóxicos: una sola pila puede contaminar miles de litros de agua que terminan en la bahía interior del Titicaca.",
+    examples: [
+      "Pilas y baterías",
+      "Focos ahorradores y fluorescentes",
+      "Medicamentos vencidos",
+      "Envases de aerosoles",
+      "Envases de plaguicidas",
+      "Aparatos eléctricos en desuso",
+    ],
+    tip: "Nunca los mezcles con la basura común. Guárdalos en un frasco cerrado hasta la próxima campaña de acopio.",
+    swatch: "var(--color-peligroso)",
+    ink: "#ffffff",
+  },
+];
+
+export interface WasteItem {
+  name: string;
+  bin: BinId;
+  note?: string;
+}
+
+/** Índice A–Z para responder "¿dónde boto esto?". */
+export const ITEMS: readonly WasteItem[] = [
+  { name: "Aceite de cocina usado", bin: "peligroso", note: "En botella cerrada, a un punto de acopio. Nunca al desagüe." },
+  { name: "Aerosoles", bin: "peligroso" },
+  { name: "Aserrín sin tratar", bin: "organico" },
+  { name: "Bolsas plásticas limpias", bin: "aprovechable" },
+  { name: "Borra de café", bin: "organico" },
+  { name: "Botellas de plástico PET", bin: "aprovechable", note: "Vacías, enjuagadas y aplastadas." },
+  { name: "Botellas de vidrio", bin: "aprovechable" },
+  { name: "Cajas de cartón", bin: "aprovechable", note: "Desarmadas y secas." },
+  { name: "Cajas de pizza con grasa", bin: "no-aprovechable", note: "La parte limpia de la tapa sí es aprovechable." },
+  { name: "Cáscaras de huevo", bin: "organico" },
+  { name: "Cáscaras de frutas", bin: "organico" },
+  { name: "Cables y cargadores", bin: "peligroso", note: "Son RAEE: llévalos a una campaña de acopio." },
+  { name: "Celulares viejos", bin: "peligroso", note: "Son RAEE: llévalos a una campaña de acopio." },
+  { name: "Cepillos de dientes", bin: "no-aprovechable" },
+  { name: "Cerámica rota", bin: "no-aprovechable", note: "Envuelta en papel y marcada." },
+  { name: "Chicles", bin: "no-aprovechable" },
+  { name: "Colillas de cigarro", bin: "no-aprovechable" },
+  { name: "Cuadernos y hojas", bin: "aprovechable" },
+  { name: "Envases de yogur", bin: "aprovechable", note: "Enjuagados." },
+  { name: "Envolturas de galletas y snacks", bin: "no-aprovechable", note: "Son metalizadas y no se reciclan." },
+  { name: "Focos ahorradores", bin: "peligroso", note: "Contienen mercurio. No los rompas." },
+  { name: "Frascos de mermelada", bin: "aprovechable" },
+  { name: "Hojas secas y poda", bin: "organico" },
+  { name: "Huesos", bin: "organico", note: "Van con orgánicos, aunque no conviene ponerlos en la compostera casera." },
+  { name: "Latas de conserva", bin: "aprovechable", note: "Enjuagadas." },
+  { name: "Latas de gaseosa", bin: "aprovechable" },
+  { name: "Mascarillas", bin: "no-aprovechable" },
+  { name: "Medicamentos vencidos", bin: "peligroso" },
+  { name: "Pañales", bin: "no-aprovechable" },
+  { name: "Papel higiénico usado", bin: "no-aprovechable" },
+  { name: "Periódicos y revistas", bin: "aprovechable" },
+  { name: "Pilas y baterías", bin: "peligroso" },
+  { name: "Plumones y lapiceros", bin: "no-aprovechable" },
+  { name: "Restos de comida", bin: "organico" },
+  { name: "Ropa vieja", bin: "aprovechable", note: "Si está en buen estado, mejor dónala." },
+  { name: "Servilletas usadas", bin: "no-aprovechable" },
+  { name: "Tapitas de plástico", bin: "aprovechable" },
+  { name: "Tecnopor", bin: "no-aprovechable" },
+  { name: "Tetrapak", bin: "aprovechable", note: "Enjuagado y aplastado." },
+  { name: "Termómetros de mercurio", bin: "peligroso" },
+  { name: "Toallas higiénicas", bin: "no-aprovechable" },
+  { name: "Bolsas de té e infusiones", bin: "organico" },
+  { name: "Vasos descartables de plástico", bin: "aprovechable", note: "Limpios." },
+  { name: "Vasos de papel con cera", bin: "no-aprovechable" },
+];

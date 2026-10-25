@@ -1,0 +1,14 @@
+export const PAGES = [
+  { path: "/", title: /Gerencia de Gestión Integral de Residuos Sólidos/ },
+  { path: "/rutas", title: /Rutas y horarios de recolección/ },
+  { path: "/rutas/ruta-01", title: /Centro Histórico/ },
+  { path: "/segregacion", title: /Separa tus residuos/ },
+  { path: "/compostaje", title: /Programa Municipal de Compostaje/ },
+  { path: "/campanas", title: /Sumaq Ayni/ },
+  { path: "/noticias", title: /Actualidad/ },
+  { path: "/noticias/cancharani-area-recuperada", title: /Cancharani/ },
+  { path: "/reporta", title: /Reporta a tu vecino/ },
+  { path: "/reporta/seguimiento", title: /Sigue tu reporte/ },
+  { path: "/preguntas", title: /Preguntas frecuentes/ },
+  { path: "/creditos", title: /Créditos/ },
+] as const;
