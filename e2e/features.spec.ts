@@ -77,6 +77,15 @@ test.describe("Segregación", () => {
     await expect(page.getByText("Pilas y baterías va en la bolsa")).toBeVisible();
     await expect(page.getByText("Rojo", { exact: true }).last()).toBeVisible();
   });
+
+  test("el buscador de objetos tolera errores y nombres comunes", async ({ page }) => {
+    await page.goto("/segregacion");
+    const search = page.getByRole("searchbox", { name: /Escribe un objeto/ });
+    await search.fill("botella platico");
+    await expect(page.getByRole("button", { name: "Botellas de plástico PET" })).toBeVisible();
+    await search.fill("caja de leche");
+    await expect(page.getByRole("button", { name: "Tetrapak" })).toBeVisible();
+  });
 });
 
 test.describe("Compostaje", () => {

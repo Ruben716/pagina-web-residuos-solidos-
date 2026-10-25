@@ -262,6 +262,7 @@
 .leaflet-bar a {
   color: var(--color-tinta) !important;
 }
+
 .leaflet-tooltip.route-tip {
   border: 0;
   border-radius: 8px;

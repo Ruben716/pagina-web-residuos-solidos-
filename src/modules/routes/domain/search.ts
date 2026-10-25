@@ -1,13 +1,7 @@
+import { bestWordScore, normalize, STOPWORDS, words as wordsOf } from "@/shared/lib/fuzzy";
 import type { CollectionRoute } from "./types";
 
-/** Normaliza para buscar sin tildes, mayúsculas ni signos: "Jr. Tarapacá," ≈ "jr tarapaca". */
-export const normalize = (text: string) =>
-  text
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .trim();
+export { normalize };
 
 /* ------------------------------------------------------------------
    Buscador tolerante de calles, barrios y lugares
@@ -46,92 +40,13 @@ const CANON: Record<string, string> = {
 };
 
 // No hace falta escribirlas: "lima" encuentra "Jr. Lima" y "calle lima" también.
-const OPTIONAL = new Set([
-  "jiron",
-  "avenida",
-  "pasaje",
-  "calle",
-  "urbanizacion",
-  "prolongacion",
-  "de",
-  "del",
-  "la",
-  "el",
-  "los",
-  "las",
-  "y",
-  "en",
-  "a",
-]);
+const OPTIONAL = new Set(["jiron", "avenida", "pasaje", "calle", "urbanizacion", "prolongacion", ...STOPWORDS]);
 
-/** Fonética del castellano andino para comparar: c/k/q, s/z, b/v, y/ll/i, h muda. */
-const phonetic = (t: string) =>
-  t
-    .replace(/ch/g, "§")
-    .replace(/h/g, "")
-    .replace(/qu/g, "k")
-    .replace(/q/g, "k")
-    .replace(/c([aou])/g, "k$1")
-    .replace(/c([ei])/g, "s$1")
-    .replace(/c$/g, "k")
-    .replace(/z/g, "s")
-    .replace(/v/g, "b")
-    .replace(/ll/g, "y")
-    .replace(/([aeiou])i([aeiou])/g, "$1y$2")
-    .replace(/(.)\1+/g, "$1")
-    .replace(/§/g, "ch");
-
-const tokens = (text: string) =>
-  normalize(text)
-    .split(" ")
-    .filter(Boolean)
-    .map((t) => CANON[t] ?? t);
-
-/** Distancia de edición con transposiciones (Damerau–Levenshtein restringida), con tope para cortar pronto. */
-function distance(a: string, b: string, max: number) {
-  if (Math.abs(a.length - b.length) > max) return max + 1;
-  const prev2 = new Array<number>(b.length + 1).fill(0);
-  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
-  for (let i = 1; i <= a.length; i++) {
-    const cur = [i];
-    let rowMin = i;
-    for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      let v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
-      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) v = Math.min(v, prev2[j - 2] + 1);
-      cur[j] = v;
-      rowMin = Math.min(rowMin, v);
-    }
-    if (rowMin > max) return max + 1;
-    prev2.splice(0, prev2.length, ...prev);
-    prev = cur;
-  }
-  return prev[b.length];
-}
-
-const tolerance = (len: number) => (len >= 8 ? 2 : len >= 4 ? 1 : 0);
-
-/** Qué tan bien una palabra buscada coincide con una palabra del campo (0 = nada). */
-function tokenScore(q: string, f: string): number {
-  if (q === f) return 3;
-  if (q.length >= 2 && f.startsWith(q)) return 2.5; // mientras escribe
-  const qp = phonetic(q);
-  const fp = phonetic(f);
-  if (qp === fp) return 2.4;
-  if (qp.length >= 3 && fp.startsWith(qp)) return 2;
-  const tol = tolerance(q.length);
-  if (!tol) return 0;
-  if (distance(qp, fp, tol) <= tol) return 1.6;
-  // error de tipeo en una palabra a medio escribir: compara con el comienzo de la palabra del campo
-  if (q.length >= 5 && fp.length > qp.length && distance(qp, fp.slice(0, qp.length), tol) <= tol) return 1.2;
-  return 0;
-}
+const tokens = (text: string) => wordsOf(text, CANON);
 
 interface IndexedField {
   text: string;
   words: string[];
-  /** palabras pegadas, para "huaynapucara" ≈ "Huayna Pucara" */
-  joined: string;
 }
 
 type Searchable = Pick<CollectionRoute, "number" | "title" | "streets" | "landmarks">;
@@ -140,10 +55,7 @@ const index = new WeakMap<object, IndexedField[]>();
 function fieldsOf(route: Searchable) {
   let f = index.get(route);
   if (!f) {
-    f = [route.title, ...route.streets, ...route.landmarks].map((text) => {
-      const words = tokens(text);
-      return { text, words, joined: phonetic(words.join("")) };
-    });
+    f = [route.title, ...route.streets, ...route.landmarks].map((text) => ({ text, words: tokens(text) }));
     index.set(route, f);
   }
   return f;
@@ -209,9 +121,7 @@ function findRouteHits<T extends Searchable>(routes: readonly T[], query: string
       let best = 0;
       let bestField: IndexedField | null = null;
       for (const field of fields) {
-        let s = 0;
-        for (const w of field.words) s = Math.max(s, tokenScore(q, w));
-        if (s < 2 && q.length >= 5 && field.joined.includes(phonetic(q))) s = 2;
+        const s = bestWordScore(q, field.words);
         if (s > best) {
           best = s;
           bestField = field;

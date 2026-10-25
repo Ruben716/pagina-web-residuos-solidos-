@@ -5,6 +5,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icon";
 import type { Bin, BinId, WasteItem } from "../data";
+import { findItems } from "../search";
 
 const fold = (s: string) =>
   s
@@ -20,17 +21,22 @@ export function WhereDoesItGo({ items, bins }: { items: readonly WasteItem[]; bi
   const q = useDeferredValue(query);
   const byId = useMemo(() => new Map(bins.map((b) => [b.id, b])), [bins]);
 
+  const searching = q.trim().length >= 2;
   const groups = useMemo(() => {
-    const list = items
-      .filter((i) => (!bin || i.bin === bin) && fold(i.name).includes(fold(q.trim())))
-      .toSorted((a, b) => a.name.localeCompare(b.name, "es"));
+    const inBin = items.filter((i) => !bin || i.bin === bin);
+    // con búsqueda: coincidencias tolerantes, de la más a la menos parecida, en un solo grupo
+    if (searching) {
+      const found = findItems(inBin, q);
+      return found.length ? ([["", found]] as [string, WasteItem[]][]) : [];
+    }
+    const list = inBin.filter((i) => fold(i.name).startsWith(fold(q.trim()))).toSorted((a, b) => a.name.localeCompare(b.name, "es"));
     const map = new Map<string, WasteItem[]>();
     for (const item of list) {
       const letter = fold(item.name[0]).toUpperCase();
       map.set(letter, [...(map.get(letter) ?? []), item]);
     }
     return [...map.entries()];
-  }, [items, bin, q]);
+  }, [items, bin, q, searching]);
 
   const answer = picked ? byId.get(picked.bin)! : null;
 

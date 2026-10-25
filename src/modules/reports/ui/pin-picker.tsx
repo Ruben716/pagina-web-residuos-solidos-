@@ -1,10 +1,8 @@
 "use client";
 
-import { SITE } from "@/shared/config/site";
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useEffect, useMemo } from "react";
-import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { useEffect, useRef } from "react";
+import { useLeafletMap } from "@/shared/map/use-leaflet-map";
 
 export type LatLngTuple = [number, number];
 
@@ -15,37 +13,41 @@ const pinIcon = L.divIcon({
   iconAnchor: [14, 28],
 });
 
-function ClickToMove({ onChange }: { onChange: (p: LatLngTuple) => void }) {
-  useMapEvents({ click: (e) => onChange([e.latlng.lat, e.latlng.lng]) });
-  return null;
-}
+/** Mapa para marcar el punto del reporte: el pin se arrastra o se mueve tocando el mapa. */
+export default function PinPicker({ position, onChange }: { position: LatLngTuple; onChange: (p: LatLngTuple) => void }) {
+  const el = useRef<HTMLDivElement>(null);
+  const map = useLeafletMap(el, { center: position, zoom: 16 });
+  const marker = useRef<L.Marker | null>(null);
+  const change = useRef(onChange);
+  useEffect(() => {
+    change.current = onChange;
+  });
 
-function Recenter({ position }: { position: LatLngTuple }) {
-  const map = useMap();
+  // pin arrastrable y clic para moverlo
+  useEffect(() => {
+    if (!map) return;
+    const m = L.marker(map.getCenter(), { draggable: true, icon: pinIcon, keyboard: false }).addTo(map);
+    m.on("dragend", () => {
+      const { lat, lng } = m.getLatLng();
+      change.current([lat, lng]);
+    });
+    const onClick = (e: L.LeafletMouseEvent) => change.current([e.latlng.lat, e.latlng.lng]);
+    map.on("click", onClick);
+    marker.current = m;
+    return () => {
+      map.off("click", onClick);
+      m.remove();
+      marker.current = null;
+    };
+  }, [map]);
+
+  // la posición manda: GPS, clic o arrastre
   const [lat, lng] = position;
   useEffect(() => {
+    if (!map || !marker.current) return;
+    marker.current.setLatLng([lat, lng]);
     map.panTo([lat, lng], { animate: true });
   }, [map, lat, lng]);
-  return null;
-}
 
-export default function PinPicker({ position, onChange }: { position: LatLngTuple; onChange: (p: LatLngTuple) => void }) {
-  const handlers = useMemo(
-    () => ({
-      dragend: (e: L.LeafletEvent) => {
-        const { lat, lng } = (e.target as L.Marker).getLatLng();
-        onChange([lat, lng]);
-      },
-    }),
-    [onChange],
-  );
-
-  return (
-    <MapContainer center={position} zoom={16} scrollWheelZoom={false} className="h-full w-full">
-      <TileLayer attribution={SITE.map.attribution} url={SITE.map.tiles} />
-      <Marker position={position} draggable icon={pinIcon} eventHandlers={handlers} keyboard={false} />
-      <ClickToMove onChange={onChange} />
-      <Recenter position={position} />
-    </MapContainer>
-  );
+  return <div ref={el} className="h-full w-full" />;
 }
