@@ -313,7 +313,14 @@
     opacity: 0;
   }
 }
+@keyframes marker-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.6);
+  }
+}
 .endpoint-marker {
+  animation: marker-pop 0.55s var(--ease-out-expo) both;
   display: inline-flex;
   align-items: center;
   gap: 6px;

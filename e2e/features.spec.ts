@@ -1,29 +1,43 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Rutas", () => {
-  test("el buscador del inicio encuentra la ruta de una calle y la muestra en el mapa", async ({ page }) => {
+  test("el buscador del inicio encuentra la ruta de una calle y abre su ficha", async ({ page }) => {
     await page.goto("/");
     const search = page.getByRole("searchbox", { name: /Busca tu calle/ });
+    const routes = page.getByRole("list", { name: "Rutas de recolección" });
     await expect(async () => {
       await search.fill("flora");
       await search.fill("floral");
-      await expect(page.getByRole("button", { name: /Av\. Floral \(Tramo Puerto\)/ })).toBeVisible({ timeout: 1500 });
+      await expect(routes.getByRole("button", { name: /Av\. Floral \(Tramo Puerto\)/ })).toBeVisible({ timeout: 1500 });
     }).toPass();
-    await page.getByRole("button", { name: /Av\. Floral \(Tramo Puerto\)/ }).click();
-    await expect(page.getByRole("button", { name: "Ruta 05", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await routes.getByRole("button", { name: /Av\. Floral \(Tramo Puerto\)/ }).click();
     await expect(page.getByRole("heading", { name: /Barrio Porteño/ })).toBeVisible();
     await expect(page.locator(".leaflet-container")).toBeVisible();
     await page.getByRole("link", { name: "Ver ficha completa" }).click();
     await expect(page).toHaveURL(/\/rutas\/ruta-05$/);
   });
 
-  test("el planificador filtra por sector y abre la ruta de la URL", async ({ page }) => {
+  test("el planificador abre la ruta de la URL, vuelve a la lista y filtra por sector", async ({ page }) => {
     await page.goto("/rutas?ruta=ruta-09");
     await expect(page.getByRole("heading", { name: /Ciudad Universitaria UNA Puno/ })).toBeVisible();
+    await page.getByRole("button", { name: "Todas las rutas" }).click();
     await page.getByRole("button", { name: "Sur", exact: true }).click();
     const routes = page.getByRole("list", { name: "Rutas de recolección" });
-    await expect(routes.getByRole("button", { name: "Ruta 16", exact: true })).toBeVisible();
-    await expect(routes.getByRole("button", { name: "Ruta 01", exact: true })).toHaveCount(0);
+    await expect(routes.getByRole("button", { name: /^Ruta 16/ })).toBeVisible();
+    await expect(routes.getByRole("button", { name: /^Ruta 01/ })).toHaveCount(0);
+  });
+
+  test("el buscador entiende abreviaturas, signos y errores de tipeo", async ({ page }) => {
+    const routes = page.getByRole("list", { name: "Rutas de recolección" });
+    for (const [query, expected] of [
+      ["jiron lima", /^Ruta 01/],
+      ["laycacota", /^Ruta 02/],
+      ["huajsapta", /^Ruta 04/],
+      ["ruta 5", /^Ruta 05/],
+    ] as const) {
+      await page.goto(`/rutas?q=${encodeURIComponent(query)}`);
+      await expect(routes.getByRole("button").first()).toHaveAccessibleName(expected);
+    }
   });
 
   test("una búsqueda sin resultados explica qué hacer", async ({ page }) => {
@@ -35,6 +49,8 @@ test.describe("Rutas", () => {
 
   test("el cuadro de horarios lista las rutas por sector", async ({ page }) => {
     await page.goto("/rutas#horarios");
+    // el mapa de la misma página carga Leaflet y mosaicos: se espera a que termine antes de navegar
+    await page.waitForLoadState("networkidle");
     await expect(page.getByRole("table", { name: "Rutas del sector 4" })).toBeVisible();
     await page
       .getByRole("table", { name: "Rutas del sector 1" })

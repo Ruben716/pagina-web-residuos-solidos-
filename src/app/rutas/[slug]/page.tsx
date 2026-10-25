@@ -144,7 +144,7 @@ async function RutaDetail({ params }: Pick<PageProps<"/rutas/[slug]">, "params">
 
           <div className="lg:col-span-7">
             <div className="overflow-hidden rounded-3xl border border-bruma shadow-panel lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
-              <LazyRouteMap routes={[route]} selected={route.slug} className="h-[60vh] min-h-80 lg:h-[34rem]" legend={false} />
+              <LazyRouteMap routes={[route]} selected={route.slug} className="h-[60vh] min-h-80 lg:h-[34rem]" />
               {route.trace === "referencial" && (
                 <p className="flex gap-2 border-t border-bruma bg-cielo px-5 py-3 text-sm text-pizarra">
                   <Icon name="info" size={17} className="mt-0.5 shrink-0 text-puno" />

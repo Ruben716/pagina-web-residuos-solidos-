@@ -17,7 +17,7 @@ export default function Home() {
       <HeroCarousel slides={SLIDES} title={`${SITE.office} de la ${SITE.institution}`} />
 
       {/* Rutas: la sección principal */}
-      <Section tone="tint" id="rutas" aria-labelledby="rutas-titulo" className="scroll-mt-4 overflow-hidden">
+      <Section tone="tint" id="rutas" aria-labelledby="rutas-titulo" className="scroll-mt-4 overflow-hidden pb-0 md:pb-0">
         <div aria-hidden className="lake-waves absolute inset-x-0 top-10 text-puno-500/15" />
         <div className="shell relative">
           <SectionHeading
@@ -31,10 +31,9 @@ export default function Home() {
               </ButtonLink>
             }
           />
-          <Reveal>
-            <RoutePlanner routes={plannerView()} sectors={getSectors()} />
-          </Reveal>
         </div>
+        {/* mapa a todo el ancho, con el panel de rutas flotando encima */}
+        <RoutePlanner routes={plannerView()} sectors={getSectors()} />
       </Section>
 
       {/* Segregación */}

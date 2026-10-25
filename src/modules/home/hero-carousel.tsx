@@ -88,8 +88,8 @@ export function HeroCarousel({ slides, title, footer }: { slides: readonly Slide
             />
           </motion.div>
         ))}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(0_30_58/0.92)_0%,rgb(0_42_77/0.72)_42%,rgb(0_42_77/0.15)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-noche/90 to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(0_0_0/0.55)_0%,rgb(0_0_0/0.3)_38%,transparent_62%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-linear-to-t from-black/30 to-transparent" />
       </div>
 
       <div className="shell flex flex-1 flex-col justify-center pt-12 pb-10 md:pt-16">
@@ -115,17 +115,23 @@ export function HeroCarousel({ slides, title, footer }: { slides: readonly Slide
               </motion.p>
               <motion.h2
                 variants={item}
-                className="mt-5 text-[clamp(2.3rem,5.6vw,4.3rem)] leading-[1.02] font-extrabold tracking-tight [text-shadow:0_2px_24px_rgb(0_0_0/0.25)]"
+                className="mt-5 text-[clamp(2.3rem,5.6vw,4.3rem)] leading-[1.02] font-extrabold tracking-tight [text-shadow:0_2px_18px_rgb(0_0_0/0.45)]"
               >
                 {slide.title}
               </motion.h2>
-              <motion.p variants={item} className="mt-5 max-w-[54ch] text-lg leading-relaxed text-white/88 md:text-xl">
+              <motion.p
+                variants={item}
+                className="mt-5 max-w-[54ch] text-lg leading-relaxed font-medium text-white [text-shadow:0_1px_10px_rgb(0_0_0/0.5)] md:text-xl"
+              >
                 {slide.text}
               </motion.p>
               <motion.dl variants={item} className="mt-7 flex flex-wrap gap-x-8 gap-y-3">
                 {slide.stats.map((s) => (
-                  <div key={s.label} className="flex flex-col-reverse border-l-2 border-celeste pl-3">
-                    <dt className="text-xs font-semibold text-white/75">{s.label}</dt>
+                  <div
+                    key={s.label}
+                    className="flex flex-col-reverse border-l-2 border-celeste pl-3 [text-shadow:0_1px_8px_rgb(0_0_0/0.5)]"
+                  >
+                    <dt className="text-xs font-semibold text-white/90">{s.label}</dt>
                     <dd className="text-xl font-extrabold">{s.value}</dd>
                   </div>
                 ))}
@@ -135,7 +141,7 @@ export function HeroCarousel({ slides, title, footer }: { slides: readonly Slide
                   {slide.cta.label}
                 </ButtonLink>
                 {slide.secondary && (
-                  <ButtonLink href={slide.secondary.href} variant="ghost">
+                  <ButtonLink href={slide.secondary.href} variant="ghost" className="bg-black/30 backdrop-blur-sm">
                     {slide.secondary.label}
                   </ButtonLink>
                 )}

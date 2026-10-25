@@ -45,16 +45,14 @@ export default function RutasPage() {
         focus="60% 40%"
       />
 
-      <Section tone="white" aria-labelledby="mapa-titulo" className="pt-10 md:pt-14">
-        <div className="shell">
-          <h2 id="mapa-titulo" className="sr-only">
-            Mapa de rutas
-          </h2>
-          <Suspense fallback={<div className="h-208 animate-pulse rounded-3xl bg-cielo" />}>
-            <RoutePlannerFromUrl routes={routes} sectors={sectors} />
-          </Suspense>
-        </div>
-      </Section>
+      <section aria-labelledby="mapa-titulo" className="bg-cielo">
+        <h2 id="mapa-titulo" className="sr-only">
+          Mapa de rutas
+        </h2>
+        <Suspense fallback={<div className="h-[min(48rem,calc(100svh-6rem))] min-h-[38rem] animate-pulse bg-bruma" />}>
+          <RoutePlannerFromUrl routes={routes} sectors={sectors} />
+        </Suspense>
+      </section>
 
       <Section tone="soft" id="horarios" aria-labelledby="horarios-titulo">
         <div className="shell">
