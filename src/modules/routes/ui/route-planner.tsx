@@ -25,6 +25,8 @@ interface Props {
   /** ruta abierta al cargar; sin ella se ve la lista completa */
   initialSelected?: string;
   initialQuery?: string;
+  /** en escritorio ocupa el alto que le deja su contenedor (flex), en vez de un alto fijo */
+  fill?: boolean;
 }
 
 /**
@@ -32,7 +34,7 @@ interface Props {
  * mapa a todo el ancho y un panel flotante que va de la lista de rutas (buscar y filtrar)
  * a la ficha de la ruta elegida, y vuelve.
  */
-export function RoutePlanner({ routes, sectors, initialSelected, initialQuery = "" }: Props) {
+export function RoutePlanner({ routes, sectors, initialSelected, initialQuery = "", fill = false }: Props) {
   const id = useId();
   const clock = useLimaClock();
   const [query, setQuery] = useState(initialQuery);
@@ -100,8 +102,14 @@ export function RoutePlanner({ routes, sectors, initialSelected, initialQuery = 
   }, []);
 
   return (
-    <div className="relative">
-      <div ref={mapRef} className="relative h-[55vh] min-h-[22rem] scroll-mt-20 lg:h-[min(48rem,calc(100svh-6rem))] lg:min-h-[38rem]">
+    <div className={cn("relative", fill && "lg:min-h-0 lg:flex-1")}>
+      <div
+        ref={mapRef}
+        className={cn(
+          "relative h-[55vh] min-h-[22rem] scroll-mt-20",
+          fill ? "lg:h-full lg:min-h-0" : "lg:h-[min(48rem,calc(100svh-6rem))] lg:min-h-[38rem]",
+        )}
+      >
         <LazyRouteMap
           routes={routes}
           selected={selected}
@@ -110,6 +118,8 @@ export function RoutePlanner({ routes, sectors, initialSelected, initialQuery = 
           idleHint="Elige una ruta para ver su recorrido"
           className="h-full w-full"
         />
+        {/* sombra suave: la sección anterior se apoya sobre el mapa */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-[450] h-8 bg-linear-to-b from-noche/20 to-transparent" />
       </div>
 
       <div className="relative z-[500] lg:pointer-events-none lg:absolute lg:inset-0">

@@ -16,26 +16,6 @@ export default function Home() {
     <>
       <HeroCarousel slides={SLIDES} title={`${SITE.office} de la ${SITE.institution}`} />
 
-      {/* Rutas: la sección principal */}
-      <Section tone="tint" id="rutas" aria-labelledby="rutas-titulo" className="scroll-mt-4 overflow-hidden pb-0 md:pb-0">
-        <div aria-hidden className="lake-waves absolute inset-x-0 top-10 text-puno-500/15" />
-        <div className="shell relative">
-          <SectionHeading
-            id="rutas-titulo"
-            eyebrow="Sistema integral de limpieza pública"
-            title="Rutas de recolección en Puno"
-            lede="Elige tu ruta o busca tu calle: verás en el mapa por dónde pasa el camión, qué días y a qué hora. El estado se calcula con la hora de Puno."
-            action={
-              <ButtonLink href="/rutas" variant="outline" icon="arrow">
-                Horarios por sector
-              </ButtonLink>
-            }
-          />
-        </div>
-        {/* mapa a todo el ancho, con el panel de rutas flotando encima */}
-        <RoutePlanner routes={plannerView()} sectors={getSectors()} />
-      </Section>
-
       {/* Segregación */}
       <Section tone="soft" aria-labelledby="colores">
         <div className="shell">
@@ -53,6 +33,47 @@ export default function Home() {
           <BinShowcase bins={BINS} />
         </div>
       </Section>
+
+      {/* Rutas: banda azul compacta + mapa; en escritorio la sección ocupa justo una pantalla */}
+      <section id="rutas" aria-labelledby="rutas-titulo" className="flex flex-col bg-puno-800 text-white lg:h-svh lg:min-h-[40rem]">
+        <div className="relative shrink-0 overflow-hidden">
+          <div
+            aria-hidden
+            className="absolute -top-48 -right-32 size-[30rem] rounded-full bg-[radial-gradient(circle,rgb(0_136_204/0.4),transparent_70%)]"
+          />
+          <div className="shell relative flex flex-col gap-4 py-6 lg:flex-row lg:items-center lg:gap-8 lg:py-5">
+            <div className="shrink-0">
+              <p className="text-[0.7rem] font-extrabold tracking-[0.14em] text-celeste-200 uppercase">
+                Sistema integral de limpieza pública
+              </p>
+              <h2 id="rutas-titulo" className="mt-1 text-2xl leading-tight font-extrabold md:text-[1.85rem]">
+                Rutas de recolección en Puno
+              </h2>
+            </div>
+            <p className="max-w-[46ch] text-sm leading-relaxed text-white/80 lg:flex-1 lg:border-l lg:border-white/15 lg:pl-8">
+              Busca tu calle o elige una ruta: el mapa te muestra por dónde pasa el camión, qué días y a qué hora.
+            </p>
+            <div className="flex flex-wrap items-center gap-5">
+              <dl className="flex gap-5">
+                {[
+                  ["29", "rutas"],
+                  ["4", "sectores"],
+                  ["3", "turnos"],
+                ].map(([value, label]) => (
+                  <div key={label} className="flex items-baseline gap-1.5">
+                    <dt className="order-last text-sm text-white/80">{label}</dt>
+                    <dd className="numeral text-2xl">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <ButtonLink href="/rutas#horarios" variant="white" icon="arrow" className="min-h-11 px-4 text-sm">
+                Horarios por sector
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+        <RoutePlanner routes={plannerView()} sectors={getSectors()} fill />
+      </section>
 
       {/* Actualidad */}
       <Section tone="brand" aria-labelledby="noticias" className="overflow-hidden">
