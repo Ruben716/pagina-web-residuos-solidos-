@@ -157,7 +157,7 @@ export function RoutePlanner({ routes, sectors, initialSelected, initialQuery = 
                   className="min-h-12 flex-1 bg-transparent text-[0.95rem] outline-none placeholder:text-pizarra/80 focus-visible:shadow-none focus-visible:outline-none"
                 />
               </form>
-              <div className="-mx-1 mt-3 flex gap-1.5 overflow-x-auto px-1 pb-0.5" data-lenis-prevent role="group" aria-label="Filtros">
+              <div className="-mx-1 mt-3 flex [scrollbar-width:none] gap-1.5 overflow-x-auto px-1 pb-0.5" role="group" aria-label="Filtros">
                 {[null, ...sectors.map((s) => s.id)].map((sid) => {
                   const s = sectors.find((x) => x.id === sid);
                   const on = sector === sid;

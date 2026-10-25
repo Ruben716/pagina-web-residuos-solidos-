@@ -28,7 +28,7 @@ export function RoutesTable({ sectors, routes }: Props) {
               </div>
               <p className="text-sm font-semibold text-pizarra">{items.length} rutas</p>
             </header>
-            <div className="mt-4 overflow-x-auto rounded-2xl border border-bruma" data-lenis-prevent>
+            <div className="mt-4 overflow-x-auto rounded-2xl border border-bruma">
               <table className="w-full min-w-[46rem] text-left text-sm">
                 <caption className="sr-only">Rutas del sector {s.id}</caption>
                 <thead className="bg-cielo text-xs font-bold tracking-[0.06em] text-pizarra uppercase">
