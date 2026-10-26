@@ -19,7 +19,7 @@ npx playwright install chromium   # sólo para las pruebas E2E
 npm run dev                        # http://localhost:3000 (panel en /panel)
 ```
 
-En desarrollo no hace falta instalar una base de datos: sin `DATABASE_URL`, el panel usa **PGlite** (Postgres embebido) en `.data/pglite`. La primera vez, `/panel/ingresar` pide crear el administrador; si `PANEL_SETUP_TOKEN` está definido (en `.env`), pide ese código.
+En desarrollo no hace falta instalar una base de datos: sin `DATABASE_URL`, el panel usa **PGlite** (Postgres embebido) en `.data/pglite`. El primer administrador se crea solo si están `PANEL_ADMIN_EMAIL` y `PANEL_ADMIN_PASSWORD`; si no, la primera vez `/panel/ingresar` pide crearlo (con el código `PANEL_SETUP_TOKEN`, si está definido).
 
 | Script                        | Qué hace                                                         |
 | ----------------------------- | ---------------------------------------------------------------- |
@@ -35,7 +35,7 @@ En desarrollo no hace falta instalar una base de datos: sin `DATABASE_URL`, el p
 ### Con Docker
 
 ```bash
-cp .env.example .env              # y completa POSTGRES_PASSWORD y PANEL_SETUP_TOKEN (claves largas)
+cp .env.example .env              # y completa POSTGRES_PASSWORD, PANEL_ADMIN_EMAIL y PANEL_ADMIN_PASSWORD
 docker compose up -d --build      # construye y levanta en http://localhost:3000 (panel en /panel)
 docker compose logs -f web        # registros (p. ej. errores del token de Facebook)
 docker compose down               # detener; los datos quedan en los volúmenes "datos" y "postgres"
@@ -49,7 +49,7 @@ docker compose down               # detener; los datos quedan en los volúmenes 
 
 - **Variables al construir** (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_MAP_TILES`, `NEXT_PUBLIC_MAP_ATTRIBUTION`): Next.js las incrusta en el código. Se pasan como `args` en `compose.yaml` o con `--build-arg`. Al publicar, `NEXT_PUBLIC_SITE_URL` debe ser el dominio real.
 - **Variables al arrancar** (`FACEBOOK_PAGE_TOKEN` y demás): se leen de `.env.local` con `env_file`. Como la imagen se construye sin el token, `/actualidad` arranca con el aviso "Muy pronto…" y en menos de un minuto muestra las publicaciones.
-- **Claves** (`.env`, que compose lee solo): `POSTGRES_PASSWORD` y `PANEL_SETUP_TOKEN`. Sin ellas, compose se niega a arrancar.
+- **Claves** (`.env`, que compose lee solo): `POSTGRES_PASSWORD` (obligatoria; sin ella compose no arranca) y el primer administrador: `PANEL_ADMIN_EMAIL` y `PANEL_ADMIN_PASSWORD` (y opcionalmente `PANEL_ADMIN_NAME`). Si la base no tiene usuarios, ese administrador se crea solo con la contraseña como temporal: al entrar hay que cambiarla. Después esas variables ya no se usan. Sin ellas, se crea a mano en `/panel/ingresar` con `PANEL_SETUP_TOKEN`.
 - **Persistencia:** el panel (usuarios, identidad, imágenes, historial) vive en el volumen `postgres`; las imágenes subidas y los reportes, inscripciones y voluntarios (`createJsonStore`), en `datos`. Sobreviven a `docker compose down` y a una nueva versión de la imagen; `docker compose down -v` los borra.
 - **Migraciones:** la imagen trae `drizzle/` y la web las aplica sola al conectarse a PostgreSQL.
 - Si el puerto 3000 está ocupado (por ejemplo, por `npm run dev`): `PORT=3300 docker compose up -d`.
@@ -140,7 +140,7 @@ En `/panel`. Cambia notas, textos, contenidos, identidad e imágenes sin tocar c
   - sesión en cookie `httpOnly` y `Secure` (12 h), guardada como hash en la base;
   - bloqueo de 15 minutos tras 5 intentos fallidos;
   - cada acción del servidor vuelve a verificar el permiso;
-  - el primer administrador exige `PANEL_SETUP_TOKEN` en producción;
+  - el primer administrador sale de `PANEL_ADMIN_*` (contraseña temporal) o exige `PANEL_SETUP_TOKEN` en producción;
   - contraseña temporal obligatoria de cambiar;
   - desactivar una cuenta cierra sus sesiones.
 - **Roles:** administrador (todo), editor de contenidos (notas, textos, contenidos, imágenes e historial) y fiscalizador (reservado para la etapa de reportes).

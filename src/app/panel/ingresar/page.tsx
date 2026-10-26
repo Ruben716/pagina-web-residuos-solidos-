@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { countUsers, getCurrentUser } from "@/modules/auth";
+import { countUsers, ensureInitialAdmin, getCurrentUser } from "@/modules/auth";
 import { LoginForm } from "@/modules/auth/ui/login-form";
 import { SetupForm } from "@/modules/auth/ui/setup-form";
 import { getIdentity } from "@/modules/identity";
@@ -41,6 +41,8 @@ export default async function IngresarPage() {
 /** Si ya hay sesión, al panel; si no hay ningún usuario, crear el primer administrador; si no, ingresar. */
 async function Gate() {
   if (await getCurrentUser()) redirect("/panel");
+  // con PANEL_ADMIN_EMAIL y PANEL_ADMIN_PASSWORD, el primer administrador ya existe y se pasa directo a ingresar
+  await ensureInitialAdmin();
   if ((await countUsers()) === 0) {
     return (
       <>

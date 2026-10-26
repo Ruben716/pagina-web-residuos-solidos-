@@ -21,8 +21,12 @@ services:
       - "${PORT:-3000}:3000"
     environment:
       DATABASE_URL: postgres://ggirs:${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}@db:5432/ggirs
-      # código para crear el primer administrador del panel (solo se usa una vez)
-      PANEL_SETUP_TOKEN: ${PANEL_SETUP_TOKEN:?Define PANEL_SETUP_TOKEN en .env}
+      # primer administrador: se crea solo con estos datos (contraseña temporal, se cambia al entrar)
+      PANEL_ADMIN_EMAIL: ${PANEL_ADMIN_EMAIL:-}
+      PANEL_ADMIN_PASSWORD: ${PANEL_ADMIN_PASSWORD:-}
+      PANEL_ADMIN_NAME: ${PANEL_ADMIN_NAME:-}
+      # o, sin ellos, el código para crearlo a mano en /panel/ingresar (solo se usa una vez)
+      PANEL_SETUP_TOKEN: ${PANEL_SETUP_TOKEN:-}
       # solo para probar sin HTTPS desde otra PC de la red; en producción, déjalo vacío
       PANEL_INSECURE_COOKIE: ${PANEL_INSECURE_COOKIE:-}
     # token de Facebook y demás variables del servidor; si no existe el archivo, arranca igual

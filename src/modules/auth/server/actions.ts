@@ -11,6 +11,7 @@ import { ROLE_LABEL, ROLES, type Role } from "../domain/roles";
 import { authorize, NotAllowedError } from "./guard";
 import { dummyHash, hashPassword, temporaryPassword, verifyPassword } from "./password";
 import { endSession, endSessionsOf, startSession } from "./session";
+import { ensureInitialAdmin } from "./bootstrap";
 import { countActiveAdmins, countUsers, findForLogin, findUser, insertUser, passwordHashOf, updateUser } from "./users";
 
 const fail = (message: string, field = "_"): FormState<never> => ({ status: "error", errors: { [field]: [message] } });
@@ -42,6 +43,7 @@ export async function login(_prev: FormState, formData: FormData): Promise<FormS
   const entry = attempts.get(email);
   if (entry && entry.until > now) return fail("Demasiados intentos. Espera 15 minutos o pide a un administrador que te ayude.");
 
+  await ensureInitialAdmin();
   const user = await findForLogin(email);
   const ok = await verifyPassword(password, user?.passwordHash ?? (await dummyHash()));
   if (!user || !ok || !user.active) {

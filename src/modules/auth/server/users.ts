@@ -48,6 +48,18 @@ export async function insertUser(values: { name: string; email: string; role: Ro
   return row;
 }
 
+/** Primer administrador, solo si la base sigue sin usuarios con ese correo; undefined si ya existía. */
+export async function insertInitialAdmin(values: { name: string; email: string; passwordHash: string }) {
+  const [row] = await (
+    await getDb()
+  )
+    .insert(users)
+    .values({ ...values, role: "admin", mustChangePassword: true })
+    .onConflictDoNothing()
+    .returning(PUBLIC);
+  return row;
+}
+
 export async function updateUser(id: string, values: Partial<typeof users.$inferInsert>) {
   await (await getDb()).update(users).set(values).where(eq(users.id, id));
 }
