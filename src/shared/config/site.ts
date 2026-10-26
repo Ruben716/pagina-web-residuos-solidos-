@@ -2,7 +2,7 @@ export const SITE = {
   institution: "Municipalidad Provincial de Puno",
   office: "Gerencia de Gestión Integral de Residuos Sólidos",
   officeShort: "GGIRS",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   description:
     "Rutas y horarios de recolección, guía de segregación, compostaje municipal, campañas Sumaq Ayni y reportes vecinales de la Gerencia de Gestión Integral de Residuos Sólidos de la Municipalidad Provincial de Puno.",
   // Dirección, central, serenazgo, correo y anexo de la GGIRS: Directorio Municipal 2026 de portal.munipuno.gob.pe.
@@ -33,8 +33,8 @@ export const SITE = {
    * propio o contratado (NEXT_PUBLIC_MAP_TILES / NEXT_PUBLIC_MAP_ATTRIBUTION).
    */
   map: {
-    tiles: process.env.NEXT_PUBLIC_MAP_TILES ?? "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution: process.env.NEXT_PUBLIC_MAP_ATTRIBUTION ?? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    tiles: process.env.NEXT_PUBLIC_MAP_TILES || "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution: process.env.NEXT_PUBLIC_MAP_ATTRIBUTION || '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   },
 } as const;
 

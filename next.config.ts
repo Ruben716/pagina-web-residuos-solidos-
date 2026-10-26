@@ -8,6 +8,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // en la imagen de Docker: servidor mínimo con solo los archivos necesarios (ver Dockerfile)
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   cacheComponents: true,
   partialPrefetching: true,
   // en desarrollo, permite abrir el sitio desde la IP de la red local (otra PC o el celular)

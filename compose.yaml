@@ -1,0 +1,28 @@
+# Portal de la GGIRS en Docker.
+#
+#   docker compose up -d --build     construye y levanta en http://localhost:3000
+#   docker compose logs -f web       ver los registros (por ejemplo, errores del token de Facebook)
+#   docker compose down              detener (los datos quedan en el volumen "datos")
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        # dirección pública del sitio (enlaces del sitemap y metadatos); cámbiala al publicar
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_MAP_TILES: ${NEXT_PUBLIC_MAP_TILES:-}
+        NEXT_PUBLIC_MAP_ATTRIBUTION: ${NEXT_PUBLIC_MAP_ATTRIBUTION:-}
+    image: puno-limpio:latest
+    ports:
+      - "${PORT:-3000}:3000"
+    # token de Facebook y demás variables del servidor; si no existe el archivo, arranca igual
+    env_file:
+      - path: .env.local
+        required: false
+    volumes:
+      - datos:/app/data
+    restart: unless-stopped
+
+volumes:
+  datos:

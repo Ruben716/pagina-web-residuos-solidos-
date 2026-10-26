@@ -1,0 +1,34 @@
+# Lo que no entra al contexto de build de Docker
+
+# dependencias y builds locales (se reinstalan y reconstruyen dentro de la imagen)
+node_modules
+.next
+out
+build
+*.tsbuildinfo
+next-env.d.ts
+
+# datos locales: reportes e inscripciones de prueba
+.data
+
+# secretos: el token de Facebook se pasa al arrancar el contenedor, nunca dentro de la imagen
+.env*
+!.env.example
+
+# pruebas, reportes y documentación
+e2e
+test-results
+playwright-report
+docs
+*.md
+
+# herramientas
+.git
+.gitignore
+.vscode
+.idea
+.claude
+Dockerfile
+compose.yaml
+.dockerignore
+npm-debug.log*

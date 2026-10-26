@@ -28,6 +28,25 @@ npm run dev                        # http://localhost:3000
 | `npm run audit`               | Lint, tipos, build y E2E en cadena                               |
 | `npm run format`              | Prettier con orden de clases Tailwind                            |
 
+### Con Docker
+
+```bash
+docker compose up -d --build      # construye y levanta en http://localhost:3000
+docker compose logs -f web        # registros (p. ej. errores del token de Facebook)
+docker compose down               # detener; los datos quedan en el volumen "datos"
+```
+
+| Archivo         | Qué hace                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Dockerfile`    | Tres etapas: dependencias, build y un runner mínimo (`output: "standalone"`, usuario sin privilegios, healthcheck). |
+| `compose.yaml`  | Servicio `web`, puerto `PORT` (3000 por defecto), variables de `.env.local` y volumen `datos` en `/app/data`.       |
+| `.dockerignore` | Deja fuera `node_modules`, builds, pruebas y **todos los `.env`**: ningún secreto entra en la imagen.               |
+
+- **Variables al construir** (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_MAP_TILES`, `NEXT_PUBLIC_MAP_ATTRIBUTION`): Next.js las incrusta en el código. Se pasan como `args` en `compose.yaml` o con `--build-arg`. Al publicar, `NEXT_PUBLIC_SITE_URL` debe ser el dominio real.
+- **Variables al arrancar** (`FACEBOOK_PAGE_TOKEN` y demás): se leen de `.env.local` con `env_file`. Como la imagen se construye sin el token, `/actualidad` arranca con el aviso "Muy pronto…" y en menos de un minuto muestra las publicaciones.
+- **Persistencia:** reportes, inscripciones y voluntarios (`createJsonStore`) viven en el volumen `datos`. Sobreviven a `docker compose down` y a una nueva versión de la imagen; `docker compose down -v` los borra.
+- Si el puerto 3000 está ocupado (por ejemplo, por `npm run dev`): `PORT=3300 docker compose up -d`.
+
 ## Stack
 
 - **Next.js 16.4** (App Router, Cache Components, Partial Prerendering, Server Actions) y **React 19.3** (`<ViewTransition>` para transiciones entre páginas).
