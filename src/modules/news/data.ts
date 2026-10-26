@@ -129,7 +129,7 @@ export const ARTICLES: readonly Article[] = [
       "En el ámbito municipal, es decir en casas y espacios públicos, son cuatro: verde para aprovechables, marrón para orgánicos, negro para no aprovechables y rojo para peligrosos.",
       "En empresas e instituciones se usa una versión ampliada de siete colores que separa papel, plástico, metales y vidrio.",
     ],
-    image: "contenedoresPlaza",
+    image: "contenedoresParque",
     readingMinutes: 2,
     source: {
       label: "Andina",

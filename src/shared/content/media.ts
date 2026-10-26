@@ -75,12 +75,6 @@ export const MEDIA = {
     width: 1920,
     height: 1080,
   },
-  contenedoresPlaza: {
-    src: "/images/segregacion-puno.webp",
-    alt: "Contenedores de cuatro colores y botella gigante Puno Limpio en la Plaza de Armas",
-    width: 1376,
-    height: 768,
-  },
   contenedoresParque: {
     src: "/images/segregacion-tachos.webp",
     alt: "Estación de segregación con contenedores negro, marrón, verde y rojo en un parque de Puno",
@@ -184,6 +178,40 @@ export const MEDIA = {
       url: "https://commons.wikimedia.org/wiki/File:Isla_Taquile_Lago_Titicaca_(4462855661).jpg",
       license: "CC BY-SA 2.0",
     },
+  },
+  // Un ejemplo real por color de la NTP 900.058:2019 (página de segregación)
+  binAprovechables: {
+    src: "/images/segregacion/aprovechables-botellas.webp",
+    alt: "Botellas de plástico de colores acumuladas en una jaula de reciclaje",
+    width: 1600,
+    height: 1200,
+    credit: commons("Radulf del Maresme", "https://commons.wikimedia.org/wiki/File:Plastic_bottles_for_recycling.jpg"),
+  },
+  binOrganicos: {
+    src: "/images/segregacion/organicos-cascaras.webp",
+    alt: "Cáscaras de durazno, manzana y otros restos de cocina listos para compostar",
+    width: 1600,
+    height: 1680,
+    credit: commons("Anna.Massini", "https://commons.wikimedia.org/wiki/File:Nothing_will_be_wasted!_Kitchen_scraps_for_compost!.jpg"),
+  },
+  binNoAprovechables: {
+    src: "/images/segregacion/no-aprovechables-bolsa.webp",
+    alt: "Bolsa negra de basura abierta con envolturas y restos que no se pueden reciclar",
+    width: 1600,
+    height: 1200,
+    credit: {
+      author: "Yuyudevil",
+      source: "Wikimedia Commons",
+      url: "https://commons.wikimedia.org/wiki/File:A_typical_black_bin_bag_from_the_UK_20060811.jpg",
+      license: "Dominio público",
+    },
+  },
+  binPeligrosos: {
+    src: "/images/segregacion/peligrosos-pilas.webp",
+    alt: "Montón de pilas usadas de distintas marcas y tamaños",
+    width: 1600,
+    height: 778,
+    credit: commons("Peter Fiskerstrand", "https://commons.wikimedia.org/wiki/File:Used_batteries.jpg"),
   },
 } satisfies Record<string, Media>;
 

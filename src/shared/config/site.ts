@@ -49,7 +49,7 @@ export const NAV: readonly NavItem[] = [
   { href: "/segregacion", label: "Segregación", hint: "Qué va en cada color" },
   { href: "/compostaje", label: "Compostaje", hint: "Programa municipal" },
   { href: "/campanas", label: "Sumaq Ayni", hint: "Campañas y voluntariado" },
-  { href: "/noticias", label: "Actualidad", hint: "Noticias e impacto" },
+  { href: "/actualidad", label: "Actualidad", hint: "Lo último en Facebook" },
   { href: "/preguntas", label: "Preguntas", hint: "Orientación vecinal" },
 ];
 

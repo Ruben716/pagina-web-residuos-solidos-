@@ -14,7 +14,8 @@ test.describe("Rutas", () => {
     await expect(page.getByRole("heading", { name: /Barrio Porteño/ })).toBeVisible();
     await expect(page.locator(".leaflet-container")).toBeVisible();
     await page.getByRole("link", { name: "Ver ficha completa" }).click();
-    await expect(page).toHaveURL(/\/rutas\/ruta-05$/);
+    // con toda la suite en paralelo, la ficha (mapa incluido) puede tardar más de los 5 s por defecto
+    await expect(page).toHaveURL(/\/rutas\/ruta-05$/, { timeout: 15_000 });
   });
 
   test("el planificador abre la ruta de la URL, vuelve a la lista y filtra por sector", async ({ page }) => {
@@ -70,6 +71,20 @@ test.describe("Rutas", () => {
 });
 
 test.describe("Segregación", () => {
+  test("el juego muestra un objeto, corrige la respuesta y avanza", async ({ page }) => {
+    await page.goto("/segregacion");
+    const game = page.locator("#juego");
+    // un clic antes de que hidrate la página no hace nada: se reintenta hasta que empiece
+    await expect(async () => {
+      await game.getByRole("button", { name: "Empezar a jugar" }).click({ timeout: 1000 });
+      await expect(game.getByText("Objeto 1 de 8")).toBeVisible({ timeout: 1000 });
+    }).toPass();
+    await game.getByRole("group", { name: "Elige un color" }).getByRole("button").first().click();
+    await expect(game.getByText(/¡Correcto!|Va en la bolsa/)).toBeVisible();
+    await game.getByRole("button", { name: "Siguiente" }).click();
+    await expect(game.getByText("Objeto 2 de 8")).toBeVisible();
+  });
+
   test("el índice dice en qué color va un objeto", async ({ page }) => {
     await page.goto("/segregacion");
     await page.getByRole("searchbox", { name: /Escribe un objeto/ }).fill("pilas");

@@ -61,6 +61,6 @@ export const SLIDES: readonly Slide[] = [
       { value: "Abiertas", label: "A todos los vecinos" },
     ],
     cta: { href: "/campanas", label: "Ver campañas" },
-    secondary: { href: "/noticias", label: "Noticias" },
+    secondary: { href: "/actualidad", label: "Actualidad" },
   },
 ];

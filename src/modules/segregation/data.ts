@@ -1,3 +1,5 @@
+import type { MediaKey } from "@/shared/content/media";
+
 export type BinId = "aprovechable" | "organico" | "no-aprovechable" | "peligroso";
 
 export interface Bin {
@@ -22,6 +24,8 @@ export interface Bin {
   swatch: string;
   /** texto legible sobre el swatch */
   ink: string;
+  /** foto real de ejemplo */
+  image: MediaKey;
 }
 
 // NTP 900.058:2019 (R.D. N.° 003-2019-INACAL/DN), ámbito municipal: cuatro colores.
@@ -48,6 +52,7 @@ export const BINS: readonly Bin[] = [
     tip: "Enjuaga los envases y aplástalos. Un envase con restos de comida contamina toda la bolsa.",
     swatch: "var(--color-aprovechable)",
     ink: "#ffffff",
+    image: "binAprovechables",
   },
   {
     id: "organico",
@@ -72,6 +77,7 @@ export const BINS: readonly Bin[] = [
     tip: "Escurre los restos antes de embolsarlos: menos líquido, menos olor y un compost de mejor calidad.",
     swatch: "var(--color-organico)",
     ink: "#ffffff",
+    image: "binOrganicos",
   },
   {
     id: "no-aprovechable",
@@ -96,6 +102,7 @@ export const BINS: readonly Bin[] = [
     tip: "Envuelve vidrios o cerámicas rotas en papel periódico y márcalas: protegen a quien recoge tu bolsa.",
     swatch: "var(--color-no-aprovechable)",
     ink: "#ffffff",
+    image: "binNoAprovechables",
   },
   {
     id: "peligroso",
@@ -120,6 +127,7 @@ export const BINS: readonly Bin[] = [
     tip: "Nunca los mezcles con la basura común. Guárdalos en un frasco cerrado hasta la próxima campaña de acopio.",
     swatch: "var(--color-peligroso)",
     ink: "#ffffff",
+    image: "binPeligrosos",
   },
 ];
 
@@ -130,6 +138,54 @@ export interface WasteItem {
   /** otros nombres con que la gente lo busca */
   aliases?: readonly string[];
 }
+
+/** Ícono de cada objeto para el juego "¿En qué bolsa va?" (decorativo; el nombre siempre va escrito). */
+export const ITEM_EMOJI: Readonly<Record<string, string>> = {
+  "Aceite de cocina usado": "🫗",
+  Aerosoles: "🧯",
+  "Aserrín sin tratar": "🪵",
+  "Bolsas plásticas limpias": "🛍️",
+  "Borra de café": "☕",
+  "Botellas de plástico PET": "🧴",
+  "Botellas de vidrio": "🍾",
+  "Cajas de cartón": "📦",
+  "Cajas de pizza con grasa": "🍕",
+  "Cáscaras de huevo": "🥚",
+  "Cáscaras de frutas": "🍌",
+  "Cables y cargadores": "🔌",
+  "Celulares viejos": "📱",
+  "Cepillos de dientes": "🪥",
+  "Cerámica rota": "🏺",
+  Chicles: "🍬",
+  "Colillas de cigarro": "🚬",
+  "Cuadernos y hojas": "📓",
+  "Envases de yogur": "🥛",
+  "Envolturas de galletas y snacks": "🍪",
+  "Focos ahorradores": "💡",
+  "Frascos de mermelada": "🫙",
+  "Hojas secas y poda": "🍂",
+  Huesos: "🦴",
+  "Latas de conserva": "🥫",
+  "Latas de gaseosa": "🥤",
+  Mascarillas: "😷",
+  "Medicamentos vencidos": "💊",
+  Pañales: "🧷",
+  "Papel higiénico usado": "🧻",
+  "Periódicos y revistas": "📰",
+  "Pilas y baterías": "🔋",
+  "Plumones y lapiceros": "🖊️",
+  "Restos de comida": "🍲",
+  "Ropa vieja": "👕",
+  "Servilletas usadas": "🧻",
+  "Tapitas de plástico": "🔘",
+  Tecnopor: "🥡",
+  Tetrapak: "🧃",
+  "Termómetros de mercurio": "🌡️",
+  "Toallas higiénicas": "🩹",
+  "Bolsas de té e infusiones": "🍵",
+  "Vasos descartables de plástico": "🥤",
+  "Vasos de papel con cera": "🥤",
+};
 
 /** Índice A–Z para responder "¿dónde boto esto?". */
 export const ITEMS: readonly WasteItem[] = [

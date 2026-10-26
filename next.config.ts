@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [70, 75, 85],
+    // fotos de las publicaciones de Facebook (módulo facebook)
+    remotePatterns: [{ protocol: "https", hostname: "**.fbcdn.net" }],
   },
   experimental: {
     // fotos de evidencia: se comprimen en el navegador, pero dejamos margen

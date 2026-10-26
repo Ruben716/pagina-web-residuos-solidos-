@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
+    "fb:token": "node scripts/facebook-token.mjs",
     "test:e2e": "playwright test",
     "test:a11y": "playwright test e2e/a11y.spec.ts",
     "audit": "npm run lint && npm run typecheck && npm run build && npm run test:e2e"

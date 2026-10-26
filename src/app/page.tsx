@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { HeroCarousel } from "@/modules/home/hero-carousel";
 import { SLIDES } from "@/modules/home/slides";
+import { FacebookTeaser } from "@/modules/facebook";
 import { ArticleList, FeaturedArticle, getArticles } from "@/modules/news";
 import { FIGURES, OFFICE_SOURCES, OrgChart, PortalLinks, WORK_LINES, WorkLines } from "@/modules/office";
 import { SITE } from "@/shared/config/site";
@@ -189,11 +190,11 @@ export default function Home() {
           <SectionHeading
             id="noticias"
             tone="light"
-            eyebrow="Actualidad y transparencia ambiental"
+            eyebrow="Sala de prensa"
             title="Notas de prensa"
             action={
               <ButtonLink href="/noticias" variant="white" icon="arrow">
-                Todas las noticias
+                Todas las notas
               </ButtonLink>
             }
           />
@@ -203,6 +204,9 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      {/* Últimas publicaciones de Facebook: solo si hay */}
+      <FacebookTeaser />
 
       {/* Reporta */}
       <section aria-labelledby="reporta-titulo" className="bg-cielo py-16 md:py-20">

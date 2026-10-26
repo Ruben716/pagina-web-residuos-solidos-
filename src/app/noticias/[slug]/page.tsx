@@ -61,7 +61,7 @@ async function NoticiaDetail({ params }: Pick<PageProps<"/noticias/[slug]">, "pa
               <li className="flex items-center gap-1.5">
                 <Icon name="chevronRight" size={14} className="opacity-60" />
                 <Link href="/noticias" className="hover:text-puno hover:underline">
-                  Actualidad
+                  Notas de prensa
                 </Link>
               </li>
             </ol>

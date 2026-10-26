@@ -151,7 +151,7 @@ export const PORTAL_LINKS: readonly { href: string; title: string; text: string;
     title: "Segregación",
     text: "Qué residuo va en cada uno de los cuatro colores",
     icon: "recycle",
-    image: "contenedoresPlaza",
+    image: "contenedoresParque",
   },
   {
     href: "/compostaje",

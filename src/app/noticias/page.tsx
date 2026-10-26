@@ -7,7 +7,7 @@ import { PageHero } from "@/shared/ui/page-hero";
 import { Section, SectionHeading } from "@/shared/ui/section";
 
 export const metadata: Metadata = {
-  title: "Actualidad y transparencia ambiental",
+  title: "Notas de prensa",
   description: "Intervenciones, campañas, infraestructura y orientación sobre la gestión de residuos sólidos en Puno.",
 };
 
@@ -23,9 +23,9 @@ export default function NoticiasPage() {
   return (
     <>
       <PageHero
-        eyebrow="Actualidad institucional"
-        title="Actualidad y transparencia ambiental"
-        crumbs={[{ href: "/noticias", label: "Actualidad" }]}
+        eyebrow="Sala de prensa"
+        title="Notas de prensa"
+        crumbs={[{ href: "/noticias", label: "Notas de prensa" }]}
         lede="Lo que hace la Municipalidad con la basura de la ciudad: intervenciones, campañas, obras y resultados de la gestión."
         image={MEDIA.cuadrillaLimpieza}
         focus="50% 40%"
@@ -33,7 +33,7 @@ export default function NoticiasPage() {
 
       <Section tone="soft" aria-labelledby="notas">
         <div className="shell">
-          <SectionHeading id="notas" eyebrow="Artículos recientes" title="Notas de prensa" />
+          <SectionHeading id="notas" eyebrow="Artículos recientes" title="Intervenciones, obras y orientación" />
           <FeaturedArticle article={featured} />
           <div className="mt-6">
             <ArticleList articles={rest} />

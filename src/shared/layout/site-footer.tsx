@@ -35,7 +35,12 @@ export function SiteFooter() {
         <nav aria-label="Servicios" className="lg:col-span-3">
           <h2 className="text-sm font-bold tracking-[0.12em] text-white uppercase">Servicios</h2>
           <ul className="mt-5 space-y-3 text-sm text-white/80">
-            {[...NAV, REPORT_CTA, { href: "/reporta/seguimiento", label: "Seguimiento de reportes" }].map((item) => (
+            {[
+              ...NAV,
+              { href: "/noticias", label: "Notas de prensa" },
+              REPORT_CTA,
+              { href: "/reporta/seguimiento", label: "Seguimiento de reportes" },
+            ].map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="link-underline hover:text-white">
                   {item.label}

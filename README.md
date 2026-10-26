@@ -6,7 +6,8 @@ Portal de la Gerencia de Gestión Integral de Residuos Sólidos (GGIRS):
 - guía de segregación NTP 900.058:2019;
 - programa municipal de compostaje;
 - campañas Sumaq Ayni;
-- noticias;
+- actualidad: las publicaciones de la página de Facebook de la gerencia, que llegan solas;
+- notas de prensa;
 - reportes vecinales de puntos críticos, con código de seguimiento.
 
 ## Puesta en marcha
@@ -51,7 +52,8 @@ src/
     segregation/       código de colores e índice "¿dónde va esto?"
     compost/           calculadora de impacto e inscripción (Server Action)
     campaigns/         calendario Sumaq Ayni e inscripción de voluntarios
-    news/              noticias y lista editorial
+    news/              notas de prensa y lista editorial
+    facebook/          publicaciones de Facebook (Graph API) para /actualidad y la portada
     reports/           asistente de reporte, tickets MPP-AAMM-XXXX y seguimiento
     faq/               preguntas frecuentes
     office/            la gerencia: líneas de trabajo, organigrama, cifras e índice de servicios
@@ -144,4 +146,12 @@ Sigue la identidad del portal oficial [portal.munipuno.gob.pe](https://portal.mu
   - CARTO ya exige API key.
 - **Estado de las rutas:** se calcula con el horario programado y la hora de Puno (`America/Lima`). Cuando exista GPS de la flota, el punto de integración es `routeState()` en `src/modules/routes/domain/schedule.ts`.
 - **404 con Partial Prerendering:** el shell se envía antes de que la página pueda llamar a `notFound()`. Por eso `src/proxy.ts` rechaza los slugs desconocidos antes de renderizar.
+- **Facebook (`/actualidad`):**
+  - Copia `.env.example` como `.env.local` y pon en `FACEBOOK_PAGE_TOKEN` un token de **página** de larga duración con el permiso `pages_read_engagement`. Lo saca un administrador de la página en Meta for Developers.
+  - El token sólo lo lee el servidor. Sin token, `/actualidad` muestra un aviso y la portada oculta el bloque.
+  - Se consulta a Facebook como mucho una vez por hora (`cacheLife("hours")`). Si Facebook falla, se sigue mostrando la última respuesta buena y se reintenta en minutos.
+  - Después de poner o cambiar el token hay que volver a hacer `npm run build`, porque la página se prerenderiza en el build.
+  - Para que una publicación no salga en la web: escribe `#noweb` en su texto, o pega su enlace en `HIDDEN_POSTS` de `src/modules/facebook/config.ts`. `#web` se borra del texto visible. `SINCE` limita por fecha.
+  - Un token de página deja de servir si cambia la contraseña del administrador o si le quitan el rol. Entonces hay que generar uno nuevo.
+  - `npm run fb:token` revisa el token de `.env.local` y, si es de usuario, lo cambia por el de la página. El paso a paso está en `docs/vault/Operacion/facebook-token.md`.
 - **Créditos fotográficos:** las fotos CC BY-SA se atribuyen en `/creditos`, enlazada desde el pie de página.
