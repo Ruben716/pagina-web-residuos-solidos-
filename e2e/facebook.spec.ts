@@ -41,6 +41,22 @@ test.describe("publicaciones de Facebook", () => {
     expect(posts.map((p) => p.id)).toEqual([raw.id]);
   });
 
+  test("aplica el filtro del panel: enlaces ocultos, otro hashtag y fecha de inicio", () => {
+    const data = [
+      raw,
+      { ...raw, id: "2_222", permalink_url: "https://www.facebook.com/munipuno/posts/pfbid0abc" },
+      { ...raw, id: "3_333", message: "Interno #privado" },
+      { ...raw, id: "4_444", created_time: "2025-01-01T10:00:00+0000" },
+      { ...raw, id: "5_555", message: "Reunión #noweb" },
+    ];
+    const posts = toPosts(data, {
+      hiddenPosts: ["https://www.facebook.com/munipuno/posts/pfbid0abc"],
+      hideTag: "#privado",
+      since: "2026-01-01",
+    });
+    expect(posts.map((p) => p.id)).toEqual([raw.id, "5_555"]);
+  });
+
   test("un enlace compartido usa la copia de Facebook de la foto, no la del medio", () => {
     const post = toPost({
       id: "6",

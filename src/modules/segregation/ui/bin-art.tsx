@@ -15,7 +15,11 @@ export const BIN_ICON: Record<BinId, IconName> = {
 export function BinArt({ bin, open, className }: { bin: Bin; open: boolean; className?: string }) {
   const dark = `color-mix(in srgb, ${bin.swatch} 72%, black)`;
   return (
-    <svg viewBox="0 0 120 176" className={className ?? "h-auto w-full drop-shadow-[0_14px_18px_rgb(8_48_31/0.22)]"} aria-hidden>
+    <svg
+      viewBox="0 0 120 176"
+      className={className ?? "h-auto w-full drop-shadow-[0_14px_18px_color-mix(in_srgb,var(--color-noche)_22%,transparent)]"}
+      aria-hidden
+    >
       {/* tapa con bisagra a la izquierda */}
       <motion.g
         initial={false}

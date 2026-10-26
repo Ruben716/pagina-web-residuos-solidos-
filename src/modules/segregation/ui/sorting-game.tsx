@@ -5,7 +5,7 @@ import { useState } from "react";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
-import { type Bin, type BinId, ITEM_EMOJI, type WasteItem } from "../data";
+import type { Bin, BinId, WasteItem } from "../data";
 import { BinArt } from "./bin-art";
 
 const ROUNDS = 8;
@@ -134,7 +134,7 @@ export function SortingGame({ items, bins }: { items: readonly WasteItem[]; bins
             animate={answered && !correct ? { x: [0, -10, 10, -6, 6, 0] } : { x: 0 }}
             transition={{ duration: 0.45 }}
           >
-            {ITEM_EMOJI[item.name] ?? "🗑️"}
+            {item.emoji ?? "🗑️"}
           </motion.span>
           <h3 className="mt-5 text-2xl font-extrabold text-puno-800 md:text-3xl">{item.name}</h3>
           <p className="mt-1 text-pizarra">¿En qué bolsa va?</p>

@@ -1,4 +1,4 @@
-import { CONTROL_TAGS, HIDDEN_POSTS, HIDE_TAG, SINCE } from "./config";
+import { CONTROL_TAGS, DEFAULT_FILTERS, type FeedFilters } from "./config";
 import type { FacebookPost, PostPhoto } from "./types";
 
 interface GraphImage {
@@ -28,11 +28,11 @@ const HEADLINE_MAX = 160;
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** Oculta si coincide el ID (completo o la parte tras "_"), el último tramo del enlace, o lleva el hashtag. */
-function isHidden(raw: GraphPost, text: string) {
-  if (HIDE_TAG && text.toLowerCase().includes(HIDE_TAG.toLowerCase())) return true;
+function isHidden(raw: GraphPost, text: string, { hideTag, hiddenPosts }: FeedFilters) {
+  if (hideTag && text.toLowerCase().includes(hideTag.toLowerCase())) return true;
   const keys = [raw.id, raw.id.split("_").pop()];
   if (raw.permalink_url) keys.push(URL.parse(raw.permalink_url)?.pathname.split("/").filter(Boolean).pop());
-  return HIDDEN_POSTS.some((h) => keys.some((k) => k && (h === k || h.includes(`/${k}`))));
+  return hiddenPosts.some((h) => keys.some((k) => k && (h === k || h.includes(`/${k}`))));
 }
 
 /**
@@ -51,13 +51,13 @@ function collectPhotos(raw: GraphPost): PostPhoto[] {
 }
 
 /** Convierte una publicación de la Graph API en una noticia; null si no debe salir en la web. */
-export function toPost(raw: GraphPost): FacebookPost | null {
+export function toPost(raw: GraphPost, filters: FeedFilters = DEFAULT_FILTERS): FacebookPost | null {
   const message = (raw.message ?? "").trim();
-  if (isHidden(raw, message)) return null;
+  if (isHidden(raw, message, filters)) return null;
 
   // Facebook devuelve "+0000"; el ISO estándar es "+00:00"
   const date = raw.created_time.replace(/([+-]\d{2})(\d{2})$/, "$1:$2");
-  if (SINCE && date.slice(0, 10) < SINCE) return null;
+  if (filters.since && date.slice(0, 10) < filters.since) return null;
 
   const text = CONTROL_TAGS.reduce((t, tag) => t.replace(new RegExp(`${escapeRe(tag)}\\b`, "gi"), ""), message)
     .replace(/[ \t]+\n/g, "\n")
@@ -79,4 +79,5 @@ export function toPost(raw: GraphPost): FacebookPost | null {
   };
 }
 
-export const toPosts = (data: readonly GraphPost[]) => data.flatMap((raw) => toPost(raw) ?? []);
+export const toPosts = (data: readonly GraphPost[], filters: FeedFilters = DEFAULT_FILTERS) =>
+  data.flatMap((raw) => toPost(raw, filters) ?? []);

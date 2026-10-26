@@ -51,7 +51,7 @@ export function BinShowcase({ bins }: { bins: readonly Bin[] }) {
       <div className="relative">
         <div
           aria-hidden
-          className="absolute inset-x-[8%] bottom-10 h-10 rounded-[50%] bg-[radial-gradient(closest-side,rgb(8_48_31/0.18),transparent)]"
+          className="absolute inset-x-[8%] bottom-10 h-10 rounded-[50%] bg-[radial-gradient(closest-side,color-mix(in_srgb,var(--color-noche)_18%,transparent),transparent)]"
         />
         <div
           role="tablist"

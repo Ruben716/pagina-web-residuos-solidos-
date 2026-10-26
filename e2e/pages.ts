@@ -12,4 +12,5 @@ export const PAGES = [
   { path: "/reporta/seguimiento", title: /Sigue tu reporte/ },
   { path: "/preguntas", title: /Preguntas frecuentes/ },
   { path: "/creditos", title: /Créditos/ },
+  { path: "/panel/ingresar", title: /Panel de administración|Configura el panel/ },
 ] as const;

@@ -4,13 +4,28 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { NAV, REPORT_CTA, SITE } from "@/shared/config/site";
+import { NAV, REPORT_CTA } from "@/shared/config/site";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icon";
 import { Brand } from "./brand";
+import type { Chrome } from "./chrome";
 
-export function SiteHeader() {
-  const pathname = usePathname();
+type HeaderData = Pick<Chrome, "institution" | "office" | "logo" | "contact">;
+
+/** Encabezado con la sección activa marcada según la URL. Va dentro de Suspense (usa usePathname). */
+export function SiteHeader({ chrome }: { chrome: HeaderData }) {
+  return <HeaderView chrome={chrome} pathname={usePathname()} />;
+}
+
+/**
+ * Mismo encabezado sin la sección activa: es el respaldo de Suspense. En rutas dinámicas
+ * (/rutas/[slug]) la URL no se conoce al precalcular el esqueleto, así que se pinta esto primero.
+ */
+export function SiteHeaderFallback({ chrome }: { chrome: HeaderData }) {
+  return <HeaderView chrome={chrome} pathname={null} />;
+}
+
+function HeaderView({ chrome, pathname }: { chrome: HeaderData; pathname: string | null }) {
   const { scrollY } = useScroll();
   const [raised, setRaised] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -36,18 +51,18 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => pathname !== null && (pathname === href || pathname.startsWith(`${href}/`));
 
   return (
     <header
       className={cn(
         "sticky top-0 z-50 bg-white transition-[transform,box-shadow] duration-500 ease-out-expo",
         hidden && "-translate-y-full",
-        raised ? "shadow-[0_8px_30px_-12px_rgb(8_48_31/0.25)]" : "shadow-[0_1px_0_var(--color-bruma)]",
+        raised ? "shadow-[0_8px_30px_-12px_color-mix(in_srgb,var(--color-noche)_25%,transparent)]" : "shadow-[0_1px_0_var(--color-bruma)]",
       )}
     >
       <div className="shell flex h-(--header-h) items-center justify-between gap-6">
-        <Brand />
+        <Brand brand={chrome} />
         <nav aria-label="Principal" className="hidden xl:block">
           <ul className="flex items-center">
             {NAV.map((item) => (
@@ -123,11 +138,11 @@ export function SiteHeader() {
                 )}
               </ul>
               <div className="mt-6 rounded-2xl bg-cielo p-5 text-sm text-pizarra">
-                <p className="font-bold text-puno-800">{SITE.institution}</p>
-                <p className="mt-1">{SITE.contact.address}</p>
-                <a href={SITE.contact.phoneHref} className="mt-2 inline-flex items-center gap-2 font-semibold text-puno">
+                <p className="font-bold text-puno-800">{chrome.institution}</p>
+                <p className="mt-1">{chrome.contact.address}</p>
+                <a href={chrome.contact.phoneHref} className="mt-2 inline-flex items-center gap-2 font-semibold text-puno">
                   <Icon name="phone" size={16} />
-                  Central {SITE.contact.phone}
+                  Central {chrome.contact.phone}
                 </a>
               </div>
             </nav>

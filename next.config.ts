@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
   // en la imagen de Docker: servidor mínimo con solo los archivos necesarios (ver Dockerfile)
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   cacheComponents: true,
+  // Postgres embebido (desarrollo y pruebas): trae su propio WASM y no debe pasar por el bundler
+  serverExternalPackages: ["@electric-sql/pglite"],
   partialPrefetching: true,
   // en desarrollo, permite abrir el sitio desde la IP de la red local (otra PC o el celular)
   allowedDevOrigins: ["192.168.*.*"],
@@ -29,8 +31,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**.fbcdn.net" }],
   },
   experimental: {
-    // fotos de evidencia: se comprimen en el navegador, pero dejamos margen
-    serverActions: { bodySizeLimit: "6mb" },
+    // fotos de reportes (comprimidas en el navegador) e imágenes del panel (hasta 15 MB)
+    serverActions: { bodySizeLimit: "16mb" },
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

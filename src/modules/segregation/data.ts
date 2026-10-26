@@ -137,6 +137,8 @@ export interface WasteItem {
   note?: string;
   /** otros nombres con que la gente lo busca */
   aliases?: readonly string[];
+  /** ícono del juego (decorativo) */
+  emoji?: string;
 }
 
 /** Ícono de cada objeto para el juego "¿En qué bolsa va?" (decorativo; el nombre siempre va escrito). */

@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { type KeyboardEvent, useId, useState } from "react";
-import { MEDIA } from "@/shared/content/media";
+import type { MediaRef } from "@/modules/media";
+import type { Media } from "@/shared/content/media";
 import { cn } from "@/shared/lib/cn";
 import { Icon } from "@/shared/ui/icon";
 import type { WorkLine } from "../data";
@@ -13,11 +14,11 @@ import type { WorkLine } from "../data";
  * Líneas de trabajo como pestañas verticales: a la izquierda la lista numerada, a la derecha la foto
  * y el detalle de la elegida. El cursor basta para cambiarla; con teclado, flechas arriba y abajo.
  */
-export function WorkLines({ lines }: { lines: readonly WorkLine[] }) {
+export function WorkLines({ lines, media: photos }: { lines: readonly WorkLine[]; media: Partial<Record<MediaRef, Media>> }) {
   const id = useId();
   const [index, setIndex] = useState(0);
   const line = lines[index];
-  const media = MEDIA[line.image];
+  const media = photos[line.image]!;
 
   const onKey = (e: KeyboardEvent) => {
     const delta = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;

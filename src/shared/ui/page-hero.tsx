@@ -44,7 +44,7 @@ export function PageHero({ title, eyebrow, lede, crumbs = [], image, focus = "ce
       )}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(8_48_31/0.92)_0%,rgb(13_74_51/0.78)_45%,rgb(13_74_51/0.3)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,color-mix(in_srgb,var(--color-noche)_92%,transparent)_0%,color-mix(in_srgb,var(--color-puno-800)_78%,transparent)_45%,color-mix(in_srgb,var(--color-puno-800)_30%,transparent)_100%)]"
       />
       <div className="shell py-12 md:py-20">
         <nav aria-label="Ruta de navegación" className="text-sm text-white/80">

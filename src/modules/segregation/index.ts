@@ -1,4 +1,6 @@
-export { BINS, ITEMS } from "./data";
+export { BINS } from "./data";
+export { BINS_DEFAULTS, BINS_KEY, BINS_VIEW, binsSchema, ITEMS_DEFAULTS, ITEMS_KEY, ITEMS_VIEW, itemsSchema } from "./domain/content";
+export { getSegregationContent } from "./server/content";
 export type { Bin, BinId, WasteItem } from "./data";
 export { BinBands } from "./ui/bin-bands";
 export { BinShowcase } from "./ui/bin-showcase";

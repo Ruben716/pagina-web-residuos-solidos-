@@ -1,22 +1,23 @@
 import { cacheLife } from "next/cache";
 import Link from "next/link";
-import { NAV, REPORT_CTA, SITE } from "@/shared/config/site";
-import { Icon, type IconName } from "@/shared/ui/icon";
+import { NAV, REPORT_CTA } from "@/shared/config/site";
+import { Icon } from "@/shared/ui/icon";
 import { Brand } from "./brand";
+import type { Chrome } from "./chrome";
 
-export function SiteFooter() {
+export function SiteFooter({ chrome }: { chrome: Chrome }) {
   return (
     <footer className="relative overflow-hidden bg-puno-800 text-white">
       <div aria-hidden className="lake-waves absolute inset-x-0 top-0 text-puno-500/60" />
       <div className="shell grid gap-12 pt-16 pb-12 md:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Brand tone="light" />
+          <Brand brand={chrome} tone="light" />
           <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-white/75">
             Recolección, segregación, valorización y disposición final de los residuos sólidos de la ciudad de Puno, frente al lago
             navegable más alto del mundo.
           </p>
           <ul className="mt-6 flex gap-2">
-            {SITE.social.map((s) => (
+            {chrome.social.map((s) => (
               <li key={s.href}>
                 <a
                   href={s.href}
@@ -24,7 +25,7 @@ export function SiteFooter() {
                   rel="noreferrer"
                   className="grid size-10 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
                 >
-                  <Icon name={s.icon as IconName} size={18} />
+                  <Icon name={s.icon} size={18} />
                   <span className="sr-only">{s.label} (se abre en otra pestaña)</span>
                 </a>
               </li>
@@ -55,23 +56,23 @@ export function SiteFooter() {
           <ul className="mt-5 space-y-4 text-sm text-white/80">
             <li className="flex gap-3">
               <Icon name="pin" size={18} className="mt-0.5 shrink-0 text-celeste" />
-              Palacio Municipal: {SITE.contact.address}
+              Palacio Municipal: {chrome.contact.address}
             </li>
             <li className="flex gap-3">
               <Icon name="phone" size={18} className="mt-0.5 shrink-0 text-celeste" />
-              <a href={SITE.contact.phoneHref} className="link-underline hover:text-white">
-                Central telefónica {SITE.contact.phone}
+              <a href={chrome.contact.phoneHref} className="link-underline hover:text-white">
+                Central telefónica {chrome.contact.phone}
               </a>
             </li>
             <li className="flex gap-3">
               <Icon name="mail" size={18} className="mt-0.5 shrink-0 text-celeste" />
-              <a href={`mailto:${SITE.contact.email}`} className="link-underline break-all hover:text-white">
-                {SITE.contact.email}
+              <a href={`mailto:${chrome.contact.email}`} className="link-underline break-all hover:text-white">
+                {chrome.contact.email}
               </a>
             </li>
             <li className="flex gap-3">
               <Icon name="clock" size={18} className="mt-0.5 shrink-0 text-celeste" />
-              {SITE.contact.hours}
+              {chrome.contact.hours}
             </li>
           </ul>
         </address>
@@ -80,10 +81,10 @@ export function SiteFooter() {
           <h2 className="text-sm font-bold tracking-[0.12em] text-white uppercase">Enlaces</h2>
           <ul className="mt-5 space-y-3 text-sm text-white/80">
             {[
-              { href: SITE.links.portal, label: "Portal municipal" },
-              { href: SITE.links.transparency, label: "Portal de Transparencia" },
-              { href: SITE.links.tramite, label: "Mesa de partes virtual" },
-              { href: SITE.links.gobpe, label: "MPP en gob.pe" },
+              { href: chrome.links.portal, label: "Portal municipal" },
+              { href: chrome.links.transparency, label: "Portal de Transparencia" },
+              { href: chrome.links.tramite, label: "Mesa de partes virtual" },
+              { href: chrome.links.gobpe, label: "MPP en gob.pe" },
             ].map((l) => (
               <li key={l.href}>
                 <a href={l.href} target="_blank" rel="noreferrer" className="link-underline hover:text-white">
@@ -99,7 +100,7 @@ export function SiteFooter() {
       <div className="border-t border-white/15">
         <div className="shell flex flex-col gap-3 py-6 text-xs text-white/65 md:flex-row md:items-center md:justify-between">
           <p>
-            © <CopyrightYear /> {SITE.institution}. {SITE.office}.
+            © <CopyrightYear /> {chrome.institution}. {chrome.office}.
           </p>
           <Link href="/creditos" className="link-underline hover:text-white">
             Créditos fotográficos

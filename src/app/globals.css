@@ -35,8 +35,10 @@
 
   --font-sans: var(--font-kumbh), ui-sans-serif, system-ui, sans-serif;
 
-  --shadow-panel: 0 1px 2px rgb(8 48 31 / 0.06), 0 12px 32px -12px rgb(8 48 31 / 0.18);
-  --shadow-float: 0 24px 60px -20px rgb(8 48 31 / 0.35);
+  --shadow-panel:
+    0 1px 2px color-mix(in srgb, var(--color-noche) 6%, transparent),
+    0 12px 32px -12px color-mix(in srgb, var(--color-noche) 18%, transparent);
+  --shadow-float: 0 24px 60px -20px color-mix(in srgb, var(--color-noche) 35%, transparent);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -214,7 +216,7 @@
   .field:focus-visible {
     outline: none;
     border-color: var(--color-puno);
-    box-shadow: 0 0 0 3px rgb(22 112 74 / 0.25);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-puno) 25%, transparent);
   }
   .field[aria-invalid="true"] {
     border-color: var(--color-peligroso);
@@ -296,7 +298,7 @@
   background: var(--color-puno-800);
   color: #fff;
   border: 3px solid #fff;
-  box-shadow: 0 6px 16px rgb(8 48 31 / 0.35);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--color-noche) 35%, transparent);
 }
 .truck-marker::after {
   content: "";
@@ -334,7 +336,7 @@
   background: #fff;
   font: 700 11px/1 var(--font-sans);
   color: var(--color-tinta);
-  box-shadow: 0 4px 14px rgb(8 48 31 / 0.25);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-noche) 25%, transparent);
 }
 .endpoint-marker i {
   width: 16px;

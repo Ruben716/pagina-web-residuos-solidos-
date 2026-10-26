@@ -1,7 +1,9 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { SITE } from "@/shared/config/site";
-import { POST_LIMIT } from "./config";
+import { parseDoc, readContentDoc } from "@/modules/content";
+import { type FeedFilters, POST_LIMIT } from "./config";
+import { FEED_FILTERS_DEFAULTS, FEED_FILTERS_KEY, feedFiltersSchema } from "./filters";
 import { fromFacebook, type GraphPost, toPosts } from "./parse";
 import type { FacebookFeed, FacebookPage, FacebookPost } from "./types";
 
@@ -22,10 +24,16 @@ async function graph<T>(path: string, params: Record<string, string>, token: str
   return body as T;
 }
 
-async function fetchPosts(page: string, token: string) {
+async function fetchPosts(page: string, token: string, filters: FeedFilters) {
   const body = await graph<{ data?: GraphPost[] }>(`${page}/posts`, { fields: FIELDS, limit: String(POST_LIMIT) }, token);
   if (!Array.isArray(body.data)) throw new Error("Graph API: respuesta sin publicaciones");
-  return toPosts(body.data);
+  return toPosts(body.data, filters);
+}
+
+/** Filtro vigente: el del panel o, si nunca se editó, el de config.ts. */
+async function getFeedFilters() {
+  const [filters] = parseDoc(await readContentDoc(FEED_FILTERS_KEY), feedFiltersSchema, FEED_FILTERS_DEFAULTS);
+  return filters;
 }
 
 /** Nombre, seguidores y foto de la página. Si falla, la sección funciona igual sin la tarjeta. */
@@ -55,6 +63,7 @@ async function fetchPage(page: string, token: string): Promise<FacebookPage | nu
 /**
  * Publicaciones de la página de Facebook de la gerencia. Se consulta a Facebook como mucho una vez
  * por hora; el token vive solo en el servidor (FACEBOOK_PAGE_TOKEN) y nunca llega al navegador.
+ * Al guardar el filtro en el panel se invalida la etiqueta "facebook" para aplicarlo al momento.
  */
 export async function getFacebookFeed(): Promise<FacebookFeed> {
   "use cache";
@@ -72,7 +81,7 @@ export async function getFacebookFeed(): Promise<FacebookFeed> {
     return { status: "sin-configurar", posts: [], page: null, pageUrl: pageUrlFor(null) };
   }
   try {
-    const [posts, page] = await Promise.all([fetchPosts(pageId, token), fetchPage(pageId, token)]);
+    const [posts, page] = await Promise.all([getFeedFilters().then((f) => fetchPosts(pageId, token, f)), fetchPage(pageId, token)]);
     lastGood = { posts, page };
     cacheLife("hours");
     return { status: "ok", posts, page, pageUrl: pageUrlFor(page) };

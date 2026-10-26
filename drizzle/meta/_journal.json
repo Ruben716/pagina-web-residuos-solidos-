@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792990806540,
+      "tag": "0000_panel_base",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792996081781,
+      "tag": "0001_contenidos_y_noticias",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792996093566,
+      "tag": "0002_sembrar_noticias",
+      "breakpoints": true
+    }
+  ]
+}

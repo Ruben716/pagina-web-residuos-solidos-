@@ -25,6 +25,7 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    env: { DATA_DIR: ".data/e2e" },
+    // PGlite y JSON en una carpeta aparte; código de instalación conocido para crear el admin de pruebas
+    env: { DATA_DIR: ".data/e2e", PANEL_SETUP_TOKEN: "codigo-e2e", PANEL_INSECURE_COOKIE: "1" },
   },
 });

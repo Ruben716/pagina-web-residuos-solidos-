@@ -1,7 +1,8 @@
-import { SITE } from "@/shared/config/site";
+import { getIdentity, telHref } from "@/modules/identity";
 import { Reveal, RevealGroup, RevealItem } from "@/shared/motion/reveal";
 import { Icon } from "@/shared/ui/icon";
-import { MANAGEMENT, OFFICE_SOURCES, SUBUNITS, type Unit } from "../data";
+import { OFFICE_SOURCES, type Unit } from "../data";
+import { getOfficeContent } from "../server/content";
 
 function Mail({ unit }: { unit: Unit }) {
   return (
@@ -13,7 +14,9 @@ function Mail({ unit }: { unit: Unit }) {
 }
 
 /** Organigrama de la gerencia: gerencia arriba, dos subgerencias unidas por un trazo, y datos de atención. */
-export function OrgChart() {
+export async function OrgChart() {
+  const [{ contact }, { management: MANAGEMENT, subunits: SUBUNITS }] = await Promise.all([getIdentity(), getOfficeContent()]);
+  const phoneHref = telHref(contact.phone);
   return (
     <div className="grid gap-12 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
       <div>
@@ -22,13 +25,13 @@ export function OrgChart() {
           <p className="mt-1 text-2xl font-extrabold md:text-3xl">{MANAGEMENT.head}</p>
           <p className="mt-1 text-white/80">{MANAGEMENT.name}</p>
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold">
-            <a href={`mailto:${MANAGEMENT.email}`} className="inline-flex items-center gap-2 break-all hover:underline">
+            <a href={`mailto:${contact.email}`} className="inline-flex items-center gap-2 break-all hover:underline">
               <Icon name="mail" size={16} className="shrink-0 text-brote" />
-              {MANAGEMENT.email}
+              {contact.email}
             </a>
-            <a href={SITE.contact.phoneHref} className="inline-flex items-center gap-2 hover:underline">
+            <a href={phoneHref} className="inline-flex items-center gap-2 hover:underline">
               <Icon name="phone" size={16} className="shrink-0 text-brote" />
-              {SITE.contact.phone}, anexo {MANAGEMENT.extension}
+              {contact.phone}, anexo {contact.extension}
             </a>
           </div>
         </Reveal>
@@ -63,15 +66,15 @@ export function OrgChart() {
           <h3 className="text-xl font-extrabold text-puno-800">Atención al vecino</h3>
           <ul className="mt-5 divide-y divide-niebla border-y border-niebla">
             {[
-              { icon: "pin" as const, label: "Dirección", value: `Palacio Municipal, ${SITE.contact.address}` },
-              { icon: "clock" as const, label: "Horario", value: SITE.contact.hours },
+              { icon: "pin" as const, label: "Dirección", value: `Palacio Municipal, ${contact.address}` },
+              { icon: "clock" as const, label: "Horario", value: contact.hours },
               {
                 icon: "phone" as const,
                 label: "Central",
-                value: `${SITE.contact.phone}, anexo ${SITE.contact.extension}`,
-                href: SITE.contact.phoneHref,
+                value: `${contact.phone}, anexo ${contact.extension}`,
+                href: phoneHref,
               },
-              { icon: "mail" as const, label: "Correo", value: SITE.contact.email, href: `mailto:${SITE.contact.email}` },
+              { icon: "mail" as const, label: "Correo", value: contact.email, href: `mailto:${contact.email}` },
             ].map((row) => (
               <li key={row.label} className="flex gap-4 py-4">
                 <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-white text-puno shadow-sm">

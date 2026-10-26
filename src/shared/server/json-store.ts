@@ -1,8 +1,7 @@
 import "server-only";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-
-const DATA_DIR = process.env.DATA_DIR ?? path.join(process.cwd(), ".data");
+import { DATA_DIR } from "./paths";
 
 /**
  * Almacén JSON mínimo para el monolito. Guarda en disco (`.data/`) y, si el sistema de

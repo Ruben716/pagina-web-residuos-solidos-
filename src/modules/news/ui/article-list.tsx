@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { MEDIA } from "@/shared/content/media";
+import { getSiteMedia, mediaFor } from "@/modules/media";
 import { formatDate } from "@/shared/lib/format";
 import { RevealGroup, RevealItem } from "@/shared/motion/reveal";
 import { Icon } from "@/shared/ui/icon";
-import type { Article } from "../data";
+import { type Article, readingMinutes } from "../domain/article";
 
 /** Nota destacada: foto grande y texto al lado. */
-export function FeaturedArticle({ article }: { article: Article }) {
-  const media = MEDIA[article.image];
+export async function FeaturedArticle({ article }: { article: Article }) {
+  const media = mediaFor(await getSiteMedia(), article.image);
   return (
     <Link
       href={`/noticias/${article.slug}`}
@@ -34,7 +34,7 @@ export function FeaturedArticle({ article }: { article: Article }) {
           <Icon name="calendar" size={15} />
           <time dateTime={article.date}>{formatDate(article.date)}</time>
           <span aria-hidden>·</span>
-          {article.readingMinutes} min de lectura
+          {readingMinutes(article.body)} min de lectura
         </p>
         <h3 className="mt-3 text-2xl leading-tight font-extrabold text-puno-800 transition-colors group-hover:text-puno md:text-3xl">
           {article.title}
@@ -50,11 +50,12 @@ export function FeaturedArticle({ article }: { article: Article }) {
 }
 
 /** Notas de prensa en cuadrícula: foto, fecha, categoría, titular y bajada. */
-export function ArticleList({ articles }: { articles: readonly Article[] }) {
+export async function ArticleList({ articles }: { articles: readonly Article[] }) {
+  const photos = await getSiteMedia();
   return (
     <RevealGroup as="ul" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {articles.map((a) => {
-        const media = MEDIA[a.image];
+        const media = mediaFor(photos, a.image);
         return (
           <RevealItem as="li" key={a.slug}>
             <Link
@@ -80,7 +81,7 @@ export function ArticleList({ articles }: { articles: readonly Article[] }) {
                   <Icon name="calendar" size={14} />
                   <time dateTime={a.date}>{formatDate(a.date, { dateStyle: "medium" })}</time>
                   <span aria-hidden>·</span>
-                  {a.readingMinutes} min
+                  {readingMinutes(a.body)} min
                 </p>
                 <h3 className="mt-2 text-lg leading-snug font-extrabold text-puno-800 transition-colors group-hover:text-puno">
                   {a.title}

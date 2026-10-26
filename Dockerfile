@@ -51,8 +51,11 @@ RUN addgroup -S -g 1001 nodejs && adduser -S -u 1001 -G nodejs nextjs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# migraciones de la base de datos: la app las aplica sola al conectarse (src/shared/server/db.ts)
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
 
-# reportes, inscripciones y voluntarios (createJsonStore) y caché de imágenes optimizadas: escribibles
+# reportes, inscripciones y voluntarios (createJsonStore), imágenes subidas desde el panel
+# y caché de imágenes optimizadas: escribibles
 RUN mkdir -p /app/data /app/.next/cache && chown -R nextjs:nodejs /app/data /app/.next/cache
 VOLUME ["/app/data"]
 

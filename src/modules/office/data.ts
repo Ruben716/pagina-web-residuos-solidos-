@@ -1,5 +1,4 @@
-import { SITE } from "@/shared/config/site";
-import type { MediaKey } from "@/shared/content/media";
+import type { MediaRef } from "@/modules/media";
 import type { IconName } from "@/shared/ui/icon";
 
 /**
@@ -34,12 +33,11 @@ export interface Unit {
   extension?: string;
 }
 
-export const MANAGEMENT: Unit = {
+/** El correo y el anexo de la gerencia son los de contacto del sitio: se editan en el panel (Identidad). */
+export const MANAGEMENT: Omit<Unit, "email" | "extension"> = {
   name: "Gerencia de Gestión Integral de Residuos Sólidos",
   head: "Lic. Rubén Darío Ramos Lupo",
   role: "Gerente",
-  email: SITE.contact.email,
-  extension: SITE.contact.extension,
 };
 
 export const SUBUNITS: readonly (Unit & { summary: string })[] = [
@@ -65,7 +63,7 @@ export interface WorkLine {
   unit: string;
   text: string;
   points: readonly string[];
-  image: MediaKey;
+  image: MediaRef;
   icon: IconName;
   link?: { href: string; label: string };
 }
@@ -138,7 +136,7 @@ export const FIGURES: readonly Figure[] = [
 ];
 
 /** Lo que el vecino puede hacer en este portal: cada servicio vive en su propia sección. */
-export const PORTAL_LINKS: readonly { href: string; title: string; text: string; icon: IconName; image: MediaKey }[] = [
+export const PORTAL_LINKS: readonly { href: string; title: string; text: string; icon: IconName; image: MediaRef }[] = [
   {
     href: "/rutas",
     title: "Rutas y horarios",

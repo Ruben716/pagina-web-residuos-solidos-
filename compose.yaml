@@ -1,8 +1,11 @@
-# Portal de la GGIRS en Docker.
+# Portal de la GGIRS en Docker: la web y su base de datos PostgreSQL.
 #
-#   docker compose up -d --build     construye y levanta en http://localhost:3000
-#   docker compose logs -f web       ver los registros (por ejemplo, errores del token de Facebook)
-#   docker compose down              detener (los datos quedan en el volumen "datos")
+#   docker compose up -d --build     construye y levanta en http://localhost:3000 (panel: /panel)
+#   docker compose logs -f web       ver los registros
+#   docker compose down              detener (los datos quedan en los volúmenes)
+#
+# Las claves salen del archivo .env de esta carpeta (no se sube al repositorio): POSTGRES_PASSWORD y
+# PANEL_SETUP_TOKEN. Ver .env.example.
 
 services:
   web:
@@ -16,13 +19,39 @@ services:
     image: puno-limpio:latest
     ports:
       - "${PORT:-3000}:3000"
+    environment:
+      DATABASE_URL: postgres://ggirs:${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}@db:5432/ggirs
+      # código para crear el primer administrador del panel (solo se usa una vez)
+      PANEL_SETUP_TOKEN: ${PANEL_SETUP_TOKEN:?Define PANEL_SETUP_TOKEN en .env}
+      # solo para probar sin HTTPS desde otra PC de la red; en producción, déjalo vacío
+      PANEL_INSECURE_COOKIE: ${PANEL_INSECURE_COOKIE:-}
     # token de Facebook y demás variables del servidor; si no existe el archivo, arranca igual
     env_file:
       - path: .env.local
         required: false
     volumes:
       - datos:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ggirs
+      POSTGRES_USER: ggirs
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ggirs -d ggirs"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    # sin puertos publicados: solo la web la ve, dentro de la red de Docker
 
 volumes:
   datos:
+  postgres:

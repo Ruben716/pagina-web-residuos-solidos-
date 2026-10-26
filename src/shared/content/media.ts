@@ -9,8 +9,17 @@ export interface Media {
 const commons = (author: string, url: string) => ({ author, source: "Wikimedia Commons", url, license: "CC BY-SA 4.0" });
 const unsplash = (author: string, url: string) => ({ author, source: "Unsplash", url, license: "Licencia Unsplash" });
 
-/** Todas las imágenes del sitio en un solo lugar: dimensiones, texto alternativo y crédito. */
+/**
+ * Todas las imágenes del sitio en un solo lugar: dimensiones, texto alternativo y crédito.
+ * Son los valores de fábrica: desde el panel (módulo media) cualquiera se puede reemplazar.
+ */
 export const MEDIA = {
+  escudo: {
+    src: "/images/mpp/escudo-mpp.png",
+    alt: "Escudo de la Municipalidad Provincial de Puno",
+    width: 185,
+    height: 240,
+  },
   panorama: {
     src: "/images/puno/puno-titicaca-panorama.webp",
     alt: "Vista de la ciudad de Puno sobre la ladera con la bahía del lago Titicaca al fondo",
@@ -216,5 +225,3 @@ export const MEDIA = {
 } satisfies Record<string, Media>;
 
 export type MediaKey = keyof typeof MEDIA;
-
-export const CREDITED_MEDIA = Object.values(MEDIA).filter((m): m is Media & Required<Pick<Media, "credit">> => "credit" in m);

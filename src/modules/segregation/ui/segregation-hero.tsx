@@ -16,7 +16,8 @@ const TURN = 1900;
 
 interface Props {
   bins: readonly Bin[];
-  lede: string;
+  /** textos editables en el panel (Textos → Segregación) */
+  copy: { eyebrow: string; title: string; mark: string; lede: string; button: string; secondary: string };
   /** foto real de fondo, bajo un velo verde para que el texto se lea */
   photo: Pick<Media, "src" | "alt">;
 }
@@ -25,7 +26,7 @@ interface Props {
  * Portada de la página: foto real de fondo, titular con los cuatro colores subrayándose uno tras otro y,
  * al lado, los cuatro tachos; por turnos cada uno abre la tapa y le cae un residuo de los suyos.
  */
-export function SegregationHero({ bins, lede, photo }: Props) {
+export function SegregationHero({ bins, copy, photo }: Props) {
   const reduced = usePrefersReducedMotion();
   const [turn, setTurn] = useState(0);
 
@@ -72,11 +73,11 @@ export function SegregationHero({ bins, lede, photo }: Props) {
             </ol>
           </nav>
 
-          <p className="mt-10 text-xs font-extrabold tracking-[0.16em] text-brote uppercase md:mt-14">Segregación en la fuente</p>
+          <p className="mt-10 text-xs font-extrabold tracking-[0.16em] text-brote uppercase md:mt-14">{copy.eyebrow}</p>
           <h1 className="mt-4 text-[clamp(2.3rem,5.4vw,4rem)] leading-[1.04] font-extrabold tracking-[-0.025em]">
-            Separa tus residuos en{" "}
+            {copy.title}{" "}
             <span className="relative inline-block pb-2">
-              cuatro colores
+              {copy.mark}
               <span aria-hidden className="absolute inset-x-0 bottom-0 flex h-2 gap-1">
                 {bins.map((b, i) => (
                   <motion.span
@@ -91,13 +92,13 @@ export function SegregationHero({ bins, lede, photo }: Props) {
               </span>
             </span>
           </h1>
-          <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-white/85">{lede}</p>
+          <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-white/85">{copy.lede}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="#buscador" variant="white" icon="search">
-              ¿Dónde va esto?
+              {copy.button}
             </ButtonLink>
             <ButtonLink href="#juego" variant="ghost" icon="play">
-              Juega y aprende
+              {copy.secondary}
             </ButtonLink>
           </div>
         </div>

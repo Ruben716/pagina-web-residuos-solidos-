@@ -1,4 +1,4 @@
-import type { MediaKey } from "@/shared/content/media";
+import type { MediaRef } from "@/modules/media";
 
 export interface Campaign {
   slug: string;
@@ -11,7 +11,8 @@ export interface Campaign {
   place: string;
   goal: string;
   audience?: string;
-  image: MediaKey;
+  /** espacio de fábrica o imagen de la biblioteca */
+  image: MediaRef;
   /** resultado, si ya se realizó */
   result?: string;
 }

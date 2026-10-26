@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MEDIA } from "@/shared/content/media";
+import type { Media } from "@/shared/content/media";
 import { cn } from "@/shared/lib/cn";
 import { ImageReveal } from "@/shared/motion/image-reveal";
 import { LineReveal } from "@/shared/motion/line-reveal";
@@ -20,7 +20,7 @@ const anchor = (b: Bin) => `color-${b.id}`;
  * recojo, ejemplos y un consejo. Arriba, una barra fija de píldoras para saltar entre colores que se
  * marca sola según la banda que se está leyendo.
  */
-export function BinBands({ bins }: { bins: readonly Bin[] }) {
+export function BinBands({ bins, photos }: { bins: readonly Bin[]; photos: Record<Bin["id"], Media> }) {
   const [current, setCurrent] = useState(bins[0].id);
 
   useEffect(() => {
@@ -65,13 +65,13 @@ export function BinBands({ bins }: { bins: readonly Bin[] }) {
       </nav>
 
       {bins.map((b, i) => (
-        <BinBand key={b.id} bin={b} index={i} />
+        <BinBand key={b.id} bin={b} photo={photos[b.id]} index={i} />
       ))}
     </div>
   );
 }
 
-function BinBand({ bin, index }: { bin: Bin; index: number }) {
+function BinBand({ bin, photo, index }: { bin: Bin; photo: Media; index: number }) {
   const flip = index % 2 === 1;
   return (
     <section
@@ -94,7 +94,7 @@ function BinBand({ bin, index }: { bin: Bin; index: number }) {
       <div className="shell relative grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <div className={cn("relative", flip && "lg:order-2")}>
           <ImageReveal
-            media={MEDIA[bin.image]}
+            media={photo}
             sizes="(min-width: 1024px) 45vw, 100vw"
             from={flip ? "left" : "bottom"}
             parallax={30}

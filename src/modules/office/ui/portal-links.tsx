@@ -1,16 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MEDIA } from "@/shared/content/media";
+import { getSiteMedia, mediaFor } from "@/modules/media";
 import { RevealGroup, RevealItem } from "@/shared/motion/reveal";
 import { Icon } from "@/shared/ui/icon";
-import { PORTAL_LINKS } from "../data";
+import { getOfficeContent } from "../server/content";
 
 /** Índice de servicios en filas amplias: al pasar el cursor la fila se tiñe y asoma la foto del servicio. */
-export function PortalLinks() {
+export async function PortalLinks() {
+  const [media, { services: PORTAL_LINKS }] = await Promise.all([getSiteMedia(), getOfficeContent()]);
   return (
     <RevealGroup as="ul" className="border-t border-bruma">
       {PORTAL_LINKS.map((l, i) => {
-        const media = MEDIA[l.image];
+        const photo = mediaFor(media, l.image);
         return (
           <RevealItem as="li" key={l.href} className="border-b border-bruma">
             <Link
@@ -29,7 +30,7 @@ export function PortalLinks() {
                 aria-hidden
                 className="relative hidden h-16 w-28 shrink-0 overflow-hidden rounded-xl opacity-0 transition-all duration-500 ease-out-expo group-hover:opacity-100 lg:block lg:-translate-x-4 lg:group-hover:translate-x-0"
               >
-                <Image src={media.src} alt="" fill sizes="112px" className="object-cover" />
+                <Image src={photo.src} alt="" fill sizes="112px" className="object-cover" />
               </span>
               <span className="grid size-11 shrink-0 place-items-center rounded-full border border-puno/30 text-puno transition-all duration-500 group-hover:border-puno group-hover:bg-puno group-hover:text-white">
                 <Icon name="arrow" size={18} className="transition-transform duration-500 ease-out-expo group-hover:-rotate-45" />
